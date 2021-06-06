@@ -1,0 +1,163 @@
+
+use lib "/home/ubuntu/workspace/dcoda_net/lib";
+use Plack::Builder;
+use Plack::App::File;
+use Plack::App::CGIBin;
+
+
+
+my $app1 = Plack::App::File->new(root => "/home/ubuntu/workspace/dcoda_net/public")->to_app;
+my $app0 = Plack::App::File->new(root => "/home/ubuntu/workspace/dcoda_net/public/stockApp")->to_app;
+my $app2 = Plack::App::File->new(root => "/home/ubuntu/workspace/dcoda_net/public/chatterBox")->to_app;
+my $app3 = Plack::App::File->new(root => "/home/ubuntu/workspace/dcoda_net/public/pollCenter")->to_app;
+my $app4 = Plack::App::File->new(root => "/home/ubuntu/workspace/dcoda_net/public/businessCentral")->to_app;
+my $app5 = Plack::App::File->new(root => "/home/ubuntu/workspace/dcoda_net/public/compSciCentral")->to_app;
+my $app6 = Plack::App::File->new(root => "/home/ubuntu/workspace/dcoda_net/public/webMarks")->to_app;
+my $app7 = Plack::App::File->new(root => "/home/ubuntu/workspace/dcoda_net/public/autoCentral")->to_app;
+my $app8 = Plack::App::File->new(root => "/home/ubuntu/workspace/dcoda_net/public/boatCentral")->to_app;
+my $app9 = Plack::App::File->new(root => "/home/ubuntu/workspace/dcoda_net/public/threadCentral")->to_app;
+my $app10 = Plack::App::File->new(root => "/home/ubuntu/workspace/dcoda_net/public/circuitCentral")->to_app;
+my $app11 = Plack::App::File->new(root => "/home/ubuntu/workspace/dcoda_net/public/bookCentral")->to_app;
+my $app_base = Plack::App::File->new(root => "/home/ubuntu/workspace/dcoda_net/public/dcoda.net")->to_app;
+
+# CGI bin for applications
+# #########################
+#my $app_cgibin_stockApp = Plack::App::CGIBin->new(root => "/cgi-bin/stockApp/cgi-bin")->to_app;
+my $app_cgibin_stockApp = Plack::App::CGIBin->new(
+      root => "/home/ubuntu/workspace/dcoda_net/cgi-bin/stockApp/cgi-bin",
+      exec_cb => sub { 1 },
+  )->to_app;
+
+my $app_cgibin_chatterBox = Plack::App::CGIBin->new(
+      root => "/home/ubuntu/workspace/dcoda_net/cgi-bin/chatterBox/cgi-bin",
+      exec_cb => sub { 1 },
+  )->to_app;
+#my $app_cgibin_chatterBox = Plack::App::CGIBin->new(root => "/cgi-bin/chatterBox/cgi-bin")->to_app;
+
+my $app_cgibin_pollCenter = Plack::App::CGIBin->new(
+      root => "/home/ubuntu/workspace/dcoda_net/cgi-bin/pollCenter/cgi-bin",
+      exec_cb => sub { 1 },
+  )->to_app;
+
+my $app_cgibin_webMarks = Plack::App::CGIBin->new(
+      root => "/home/ubuntu/workspace/dcoda_net/cgi-bin/webMarks/cgi-bin",
+      exec_cb => sub { 1 },
+  )->to_app;
+##########################
+
+my $app = builder {
+    mount "/" => builder {
+#      enable "Debug";
+      enable "Plack::Middleware::VisitLogger";
+      enable "Plack::Middleware::Static",
+      path => sub { s(^/$)(/index.htm) }, root => "/home/ubuntu/workspace/dcoda_net/public";
+      $app1;
+   };
+    mount "/dcoda.net" => builder {
+#      enable "Debug";
+      enable "Plack::Middleware::Static",
+      path => sub { s(^$)(/index.htm) }, root => "/home/ubuntu/workspace/dcoda_net/public";
+      $app_base;
+   };
+    mount "/stockApp" => builder {
+#      enable "Debug";
+      enable "Plack::Middleware::Static",
+      path => sub { s(^$|^/$)(index.htm) }, root => "/home/ubuntu/workspace/dcoda_net/public/stockApp";
+      $app0;
+   };
+##########  Mount CGIBINS  ########################
+   mount "/cgi-bin/stockApp/cgi-bin" => builder {
+      #enable "Debug";
+      $app_cgibin_stockApp;
+  };
+   mount "/chatterBox" => builder {
+      enable "Debug";
+      enable "Plack::Middleware::Static",
+      path => sub { s(^$|^/$)(index.html) }, root => "/home/ubuntu/workspace/dcoda_net/public/chatterBox";
+      $app2;
+  };
+   mount "/cgi-bin/chatterBox/cgi-bin" => builder {
+      enable "Debug";
+      $app_cgibin_chatterBox;
+  };
+
+   mount "/cgi-bin/pollCenter/cgi-bin" => builder {
+      enable "Debug";
+      $app_cgibin_pollCenter;
+  };
+
+   mount "/pollCenter" => builder {
+      enable "Debug";
+      enable "Plack::Middleware::Static",
+      path => sub { s(^$|^/$)(index.htm) }, root => "/home/ubuntu/workspace/dcoda_net/public/pollCenter";
+      $app3;
+  };
+   mount "/businessCentral" => builder {
+      enable "Debug";
+      enable "Plack::Middleware::Static",
+      path => sub { s(^$|^/$)(index.html) }, root => "/home/ubuntu/workspace/dcoda_net/public/businessCentral";
+      $app4;
+  };
+   mount "/compSciCentral" => builder {
+      enable "Plack::Middleware::Static",
+      path => sub { s(^$|^/$)(index.html) }, root => "/home/ubuntu/workspace/dcoda_net/public/compSciCentral";
+      enable "Debug";
+      $app5;
+  };
+
+   mount "/autoCentral" => builder {
+      enable "Debug";
+      enable "Plack::Middleware::Static",
+      path => sub { s(^$|^/$)(/index.html) }, root => "/home/ubuntu/workspace/dcoda_net/public/autoCentral";
+      $app7;
+  };
+
+   mount "/boatCentral" => builder {
+      enable "Plack::Middleware::Static",
+      path => sub { s(^$|^/$)(index.html) }, root => "/home/ubuntu/workspace/dcoda_net/public/boatCentral";
+      $app8;
+  };
+
+   mount "/threadCentral" => builder {
+      enable "Plack::Middleware::Static",
+      path => sub { s(^$|^/$)(index.html) }, root => "/home/ubuntu/workspace/dcoda_net/public/threadCentral";
+      $app9;
+  };
+
+   mount "/circuitCentral" => builder {
+      enable "Debug";
+      enable "Plack::Middleware::Static",
+      path => sub { s(^$|^/$)(index.html) }, root => "/home/ubuntu/workspace/dcoda_net/public/circuitCentral";
+      $app10;
+  };
+
+   mount "/bookCentral" => builder {
+      enable "Plack::Middleware::Static",
+      path => sub { s(^$|^/$)(index.html) }, root => "/home/ubuntu/workspace/dcoda_net/public/bookCentral";
+      $app11;
+  };
+
+
+   mount "/webMarks" => builder {
+      enable "Plack::Middleware::Static",
+      path => sub { s(^$|^/$)(index.htm) }, root => "/home/ubuntu/workspace/dcoda_net/public/webMarks";
+      $app6;
+  };
+   mount "/cgi-bin/webMarks/cgi-bin" => builder {
+      #enable "Debug";
+      $app_cgibin_webMarks;
+  };
+
+};
+#/home/ubuntu/workspace/dcoda_net/public/chatterBox
+#my $urlmap = Plack::App::URLMap->new;
+##$urlmap->map("/" => $app1);
+#$urlmap->map("/chatterBox" => $app2);
+#$urlmap->map("/pollCenter" => $app3);
+#$urlmap->map("/compSciCentral" => $app4);
+#$urlmap->map("/businessCentral" => $app5);
+
+      #path => sub { s(^$)(/index.htm) }, root => "/home/ubuntu/workspace/dcoda_net/public/stockApp";
+
+#my $app = $urlmap->to_app;
+
