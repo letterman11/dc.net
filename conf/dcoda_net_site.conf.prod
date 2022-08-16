@@ -1,0 +1,119 @@
+<VirtualHost *:443>
+    DocumentRoot /home/ubuntu/dcoda_net/public 
+    ServerName  dcoda.net 
+    ServerAlias www.dcoda.net
+
+    SSLEngine on
+
+    #SSLCertificateFile /etc/letsencrypt/live/dcoda.net/fullchain.pem
+    #SSLCertificateKeyFile /etc/letsencrypt/live/dcoda.net/privkey.pem
+
+    SSLCertificateFile /etc/letsencrypt/live/dcoda.net-0001/fullchain.pem
+    SSLCertificateKeyFile /etc/letsencrypt/live/dcoda.net-0001/privkey.pem
+
+    ErrorLog /home/ubuntu/dcoda_net/logs/error_dcoda_net.log
+    CustomLog /home/ubuntu/dcoda_net/logs/access.log combined
+
+    ProxyPass "/pyWebMarks" "http://172.26.10.126:8086"
+    ProxyPassReverse "/pyWebMarks" "http://172.26.10.126:8086" 
+
+    Alias  "/static" "/home/ubuntu/dcoda_net/public/static"
+
+#    ProxyPass "/expressChat" "http://172.26.10.126:3010/chatterBox"
+#    ProxyPassReverse "/expressChat" "http://172.26.10.126:3010/chatterBox" 
+
+    ProxyPass "/expressChat" "http://172.26.10.126:3010/expressChat"
+    ProxyPassReverse "/expressChat" "http://172.26.10.126:3010/expressChat" 
+
+    ProxyPass "/mojoMarks" "http://172.26.10.126:3005"
+    ProxyPassReverse "/mojoMarks" "http://172.26.10.126:3005" 
+
+    <Directory />
+                Options FollowSymLinks
+                AllowOverride None
+    </Directory>
+
+    <Directory /home/ubuntu/dcoda_net/public/>
+                Options FollowSymLinks MultiViews
+                AllowOverride None
+                Require all granted
+     </Directory>
+
+
+
+     <Directory "/home/ubuntu/dcoda_net/cgi-bin">
+     Require all granted
+     Options ExecCGI FollowSymLinks
+     </Directory>
+
+     ScriptAlias  /cgi-bin/stockApp/cgi-bin/ "/home/ubuntu/dcoda_net/cgi-bin/stockApp/cgi-bin/"
+     ScriptAlias  /chatterBox/cgi-bin/ "/home/ubuntu/dcoda_net/cgi-bin/chatterBox/cgi-bin/"
+     ScriptAlias  /cgi-bin/pollCenter/cgi-bin/ "/home/ubuntu/dcoda_net/cgi-bin/pollCenter/cgi-bin/"
+     ScriptAlias  /cgi-bin/webMarks/cgi-bin/ "/home/ubuntu/dcoda_net/cgi-bin/webMarks/cgi-bin/"
+
+#        SSLCertificateFilr /path/to/your_domain_name.crt
+#        SSLCertificateKeyFile /path/to/your_private.key
+#        SSLCertificateChainFile /path/to/DigiCertCA.crt
+
+</VirtualHost>
+
+
+<VirtualHost *:80>
+    ServerAdmin webmaster@localhost_dcoda_net
+    ServerName  dcoda.net 
+    ServerAlias www.dcoda.net
+    DocumentRoot /home/ubuntu/dcoda_net/public 
+
+#    ErrorLog ${APACHE_LOG_DIR}/error_dcoda_net.log
+#    CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+    ErrorLog /home/ubuntu/dcoda_net/logs/error_dcoda_net.log
+    CustomLog /home/ubuntu/dcoda_net/logs/access.log combined
+
+
+   Redirect permanent / https://dcoda.net/
+
+   <Directory />
+                Options FollowSymLinks
+                AllowOverride None
+   </Directory>
+
+   <Directory /home/ubuntu/dcoda_net/public/>
+                Options FollowSymLinks MultiViews
+                AllowOverride None
+                Require all granted
+   </Directory>
+
+<Directory "/home/ubuntu/dcoda_net/cgi-bin">
+# AllowOverride All
+# Allow from all
+     Require all granted
+     Options ExecCGI FollowSymLinks
+#    SetHandler cgi-script 
+#    AddHandler cgi-script .cgi
+</Directory>
+
+  ScriptAlias  /cgi-bin/stockApp/cgi-bin/ "/home/ubuntu/dcoda_net/cgi-bin/stockApp/cgi-bin/"
+  ScriptAlias  /cgi-bin/chatterBox/cgi-bin/ "/home/ubuntu/dcoda_net/cgi-bin/chatterBox/cgi-bin/"
+  ScriptAlias  /cgi-bin/pollCenter/cgi-bin/ "/home/ubuntu/dcoda_net/cgi-bin/pollCenter/cgi-bin/"
+  ScriptAlias  /cgi-bin/webMarks/cgi-bin/ "/home/ubuntu/dcoda_net/cgi-bin/webMarks/cgi-bin/"
+
+</VirtualHost>
+
+<VirtualHost *:80>
+
+    ServerName  demo.dcoda.net
+    ServerAdmin webmaster@localhost
+    DocumentRoot "/home/ubuntu/demo_net/public"
+
+
+<Directory "/home/ubuntu/demo_net/public">
+
+
+    Options FollowSymLinks
+    Require all granted
+
+</Directory>
+
+
+</VirtualHost>
