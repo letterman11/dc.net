@@ -1,0 +1,88 @@
+
+<VirtualHost *:80>
+#    ServerAdmin webmaster@localhost_dcoda_net
+    ServerName  127.0.0.1 
+    ServerAlias localhost
+
+    ErrorLog /home/angus/dcoda_net/logs/error_dcoda_net.log
+    CustomLog /home/angus/dcoda_net/logs/access.log combined
+
+    ProxyPass "/pyWebMarks" "http://127.0.0.1:8086"
+    ProxyPassReverse "/pyWebMarks" "http://127.0.0.1:8086" 
+
+    Alias  "/static" "/home/angus/dcoda_net/public/static"
+
+#    ProxyPass "/expressChat" "http://172.26.10.126:3010/chatterBox"
+#    ProxyPassReverse "/expressChat" "http://172.26.10.126:3010/chatterBox" 
+
+    ProxyPass "/mojoMarks" "http://127.0.0.1:3005"
+    ProxyPassReverse "/mojoMarks" "http://127.0.0.1:3005" 
+
+    DocumentRoot /home/angus/dcoda_net/public 
+
+    <Directory />
+                Options FollowSymLinks
+                AllowOverride None
+    </Directory>
+
+    <Directory /home/angus/dcoda_net/public/>
+                Options FollowSymLinks MultiViews
+                AllowOverride None
+                Require all granted
+     </Directory>
+
+     <Directory "/home/angus/dcoda_net/cgi-bin">
+     	Require all granted
+     	Options +ExecCGI +FollowSymLinks
+     	AddHandler cgi-script .cgi
+     </Directory>
+
+
+     ScriptAlias  /cgi-bin/stockApp/cgi-bin "/home/angus/dcoda_net/cgi-bin/stockApp/cgi-bin"
+     ScriptAlias  /cgi-bin/chatterBox/cgi-bin "/home/angus/dcoda_net/cgi-bin/chatterBox/cgi-bin/"
+     ScriptAlias  /cgi-bin/pollCenter/cgi-bin "/home/angus/dcoda_net/cgi-bin/pollCenter/cgi-bin/"
+     ScriptAlias  /cgi-bin/webMarks/cgi-bin "/home/angus/dcoda_net/cgi-bin/webMarks/cgi-bin/"
+
+</VirtualHost>
+
+
+<VirtualHost *:80>
+    ServerName  127.0.0.1
+    ServerAlias lenovo
+
+    DocumentRoot /home/angus/demo_dcoda_net/public 
+
+    ErrorLog ${APACHE_LOG_DIR}/error_dcoda_net.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+    ErrorLog /home/angus/demo_dcoda_net/logs/error_dcoda_net.log
+    CustomLog /home/angus/demo_dcoda_net/logs/access.log combined
+
+
+
+   <Directory />
+                Options FollowSymLinks
+                AllowOverride None
+   </Directory>
+
+   <Directory /home/angus/demo_dcoda_net/public/>
+                Options FollowSymLinks MultiViews
+                AllowOverride None
+                Require all granted
+   </Directory>
+
+<Directory "/home/angus/demo_dcoda_net/cgi-bin">
+ AllowOverride All
+ Allow from all
+     Require all granted
+     Options ExecCGI FollowSymLinks
+    SetHandler cgi-script 
+    AddHandler cgi-script .cgi
+</Directory>
+
+  ScriptAlias  /cgi-bin/stockApp/cgi-bin/ "/home/angus/dcoda_net/cgi-bin/stockApp/"
+  ScriptAlias  /cgi-bin/chatterBox/ "/home/angus/dcoda_net/cgi-bin/chatterBox/"
+  ScriptAlias  /cgi-bin/pollCenter/ "/home/angus/dcoda_net/cgi-bin/pollCenter/"
+  ScriptAlias  /cgi-bin/webMarks/ "/home/angus/dcoda_net/cgi-bin/webMarks//"
+
+</VirtualHost>
