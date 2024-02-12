@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Digital Coda Main Site</title>
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0"/> 
+<meta name="Description" content="production support, perl"/>
+<meta name="keywords" content="perl, linux, shell,production support, financial, digital coda"/>
+<link rel="stylesheet"  media="screen and (min-device-width:800px)" href="/css/dc_style.css" type="text/css" />
+<link rel="stylesheet" media="screen and (max-device-width:600px)" href="/css/dc_style_mobile.css" type="text/css" />
+<link rel="shortcut icon" href="/images/dc.ico"/>
+<link rel="icon" href="/images/gen_rsrc/dc.ico"/>
+<script language="Javascript" type="text/javascript" src="/js/script.js"> </script>
+</head>
+<body id="layout">
+    <div id="header">
+    </div>     
+    <div class="center_div">
+	<div class="top_menu" style="display:inline-block"> 
+            <ul class="con_menu" id="con_menu">
+                <li class="ie_li"> 
+                     <ul>
+                         <li onclick="home();" class="main"><a href="#">HOME</a></li> 
+                     </ul>
+	            </li>
+
+                <li class="ie_li"> 
+                     <ul>
+                         <li onclick="about();" class="main"><a href="#">ABOUT</a></li> 
+                     </ul>
+      	        </li> 
+                <li class="ie_li"> 
+                     <ul>
+                         <li class="main"><a href="#">DEMO APPS</a></li> 
+                         <li class="drop"><a href="/pyWebMarks"> pyWebMarks </a></li> 
+                         <li class="drop"><a href="/mojoMarks"> mojoMarks </a></li> 
+                         <li class="drop"><a href="/chatterBox"> ChatBox </a></li>
+                         <li class="drop"><a href="/expressChat"> expressChat </a></li>
+                         <li class="drop"><a href="/tetris/puc.xml">TETRIS</a></li>
+                         <li class="drop" style="padding: 2px" onclick="window.open('/SiteDesign.pdf')">SITE DESIGN</li> 
+			 <li class="drop" style="padding: 2px" onclick="window.open('/DbConfig.pdf')">DBConfig Design</li>  
+                         <li class="drop"><a href="http://127.0.0.1:2222"> old demo site  </a></li>
+                     </ul>
+      	        </li> 
+                <li class="ie_li"> 
+                   <ul>
+                     <li class="main"><a href="#">DEMO SITES</a></li> 
+                     <li class="drop"><a  href="/compSciCentral"> CompSci Central </a></li>
+                     <li class="drop"><a  href="/businessCentral"> Business Central </a></li>
+                     <li class="drop"><a  href="/pollCenter"> Poll Center </a></li>
+                     <li class="drop"><a  href="/circuitCentral"> Circuit Sites </a></li>
+                     <li class="drop"><a  href="/threadCentral"> Knitting Sites </a></li>
+                     <li class="drop"><a  target="_blank" href="https://docs.google.com/spreadsheets/d/1EZNzp-GxXAWRH8zsHo5_FlnHvqlWqVxYv26QqUbLKwI/edit?usp=sharing"> National New Home Sales </a></li> 
+                     <li class="drop"><a  target="_blank" href="https://docs.google.com/spreadsheets/d/1rUtJSW6JyNYdZsot7w34NfpOczw6QnXUch_rJMo8uDs/edit#gid=2062072385"> National Regional New Home Sales </a></li>
+                     <!-- <li class="drop"><a  href="http://localhost:8083"> Python ConApp </a></li> -->
+		     <!-- <li class="drop"><a  href="/ConApp"> ConApp </a></li> -->
+                   </ul>
+	       </li>
+	     </ul> <!-- new -->
+	 </div> 
+
+      <div id="con_box"> 
+
+            <div class="image">
+   	            <a href="/pyWebMarks"> <img alt="" src="/static/images/webmarks_yellow.png"/> </a>
+            </div>
+
+            <div class="image">
+   	            <a href="/mojoMarks"> <img alt="" src="/static/images/mojoMarks_Brownies2.png"/> </a>
+            </div>
+
+            <div class="image">
+   	            <a href="/expressChat"> <img alt="" src="/static/images/expressChat_Blue_italics.png"/> </a>
+            </div>
+
+            <div class="image">
+		    <!-- <h1 style="color:green">  <a href="/xtris_mb/lxtr2.htm"> mTETRIS </a> </h1>  -->
+		    <h1 style="color:green">  <a href="/tetris/mobile_tetris.htm"> mTETRIS </a> </h1>  
+            </div>
+         </div>
+
+      <div id="content">
+	     <div id="home">
+        	<h4> This is the main Digital Coda website, a repository for web applications and web sites produced by its principal.  
+        	The principal of this web site has over 10 years of experience using primarily Perl/Shell/SQL languages on various Linux/Unix platforms.  
+        	</h4>
+		    <h4> Most of the above experience has been supporting financial applications on  multi-tiered web and 
+	         	3-tiered client/server environments. 
+		    </h4>
+		     <ul id="dcoda_certs">
+		        <li><h3> The principal is certified in the following:  </h3>
+		           <ul style="margin-left:1.5em; margin-top:.55em;list-style:disc">
+			     	<li><h4> AWS Certified Solutions Architect - Associate October 2023</h4></li>  
+			     	<li><h4> AWS Certified Cloud Practitioner  January 2023</h4></li>  
+				<!--			     	<li> <h4 style="display:inline"> Sun Certified Java Programmer November 2003 </h4></li>  -->
+			   </ul>
+			</li>
+		    </ul>
+             </div>
+
+	     <div id="about" style="display:none;">
+	     <ul style="list-style:disc">
+
+	    <li>
+	        <h4 style="margin:0px 0px 5px 0px; padding:0px"> WebMarks is an application written in Perl/CGI and has been rewritten in the Python/Bottle micro-web framework and again in the Perl/Mojolicious micro framework.
+	    	</h4>
+	    </li>
+
+	     <li>
+	    	<h4>  expressChat is a backend rewrite of ChatBox, that has now been rewritten in Javascript/expressJS.  
+	    	</h4>
+
+  	     <li>
+	    	<h4>   Tetris, this version, is written by Alex Fritze and is just slightly modded. 
+	    	</h4>
+   	    </li>
+	  </ul>
+
+            </div>
+        </div>
+	<!--  </li>  ommitted -->
+
+       <div id="footer">
+       		   <img style="width:4%;height:2%" alt="" src="/images/fish_christ_il_570xN.660550197_5xpk.jpg"/> 
+			 <hr style="height:5px; background-color:black"/>
+       		 <p class="foot"> Digital Coda LLC 2012-2023 |angusbrooks@gmail.com </p> 
+       </div>
+
+    </div> <!-- end center div -->
+
+</body>
+</html>
