@@ -1,0 +1,258 @@
+* {
+	margin:0;
+	padding:0;
+}
+
+body {
+	font-family: verdana, Arial, sans-serif;
+	font-size: 10pt;
+    background-color:blue;
+}
+
+a:link, a:visited {
+	color:black;
+}
+
+a {
+	display:block;
+	padding:3px;
+	text-decoration:none; 
+}
+
+ul {
+	margin: 0px;
+	padding: 0px;
+	list-style: none;
+	min-width: 160px;
+	width: auto;
+	border: 1px solid #ccc;
+	display: block;  
+	border:none;
+}
+
+div.con_menu {
+	width:auto; 
+/*	margin: 0 auto; */
+	margin:0px;
+	border: none;
+}
+
+#layout {
+	background-color: #ffffff;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+#header {
+	display:block;
+	width:100%;
+	height:85px;
+	/*background-color: black;
+	background: black url('/dcoda.net/gen_rsrc/INVERT_DCBANNER_CROP_594_35.jpg') no-repeat bottom center; */
+//	background-color: lightblue;
+//	background: lightblue url('/dcoda.net/gen_rsrc/fish_symbol.png');
+	background: lightblue url('/images/fish_symbol.png');
+}
+
+div.center_div {
+	position:relative; 
+	margin: 0 auto;
+	width:960px;
+	height:600px;
+	display:block;
+	border: none;
+}
+
+div.top_menu {
+	/* margin:1px auto 0;*/
+	margin-top:1px;
+	padding:0px;
+	width:auto;
+	height:3.0em; 
+	border:none; 
+	display:block; 
+}
+
+/*  div.top_menu ->
+ *  	 div.con_menu -> div.top-level || 
+ *  	 				 div.drop -> 
+ *  	 				 		div.drop-content -> 
+ *  	 				 				ul -> 
+ *  	 				 					li.level1
+ *
+ */
+
+.top_menu div.con_menu li.level1 {
+	text-align:left;
+}
+
+
+.top_menu div.con_menu > div {
+        float:left;
+        display:block;
+        margin:0px;
+        width:165px;
+        background-color: #33ccff;
+        border: solid grey 1px;
+        font-weight:bold;
+}
+
+.top_menu .top-level:hover  {
+    background-color: azure;
+	border-bottom:1px solid #b7b7b7;  
+}
+
+.top_menu .drop:hover  {
+	background-color: azure;
+	border-bottom:1px solid #b7b7b7;  
+}
+
+
+.top_menu div.drop:hover  div.drop-content   {
+	display:block; 
+}
+
+.top_menu div.drop-content:active {
+	display:block;
+}
+
+.drop-content {
+	display:none; 
+	padding:1px;
+	background-color: #33ccff;
+	border-bottom:1px solid #b7b7b7;  
+}
+
+.top_menu div.con_menu div li.level1 {
+	padding:1px 1px 0px;
+	border-bottom:1px solid #b7b7b7; 
+}
+
+.top_menu div.con_menu div li.level1:hover {
+	padding:1px 1px 0px;
+	border-bottom:1px solid #b7b7b7; 
+	background-color: azure;
+}
+
+
+.image {
+	margin:25px 0px 25px 0px;
+	border:none;
+	padding:0px;
+}
+
+.image a, .image a img {
+	border:none;
+	margin:0px;
+	padding:0px;
+}
+
+
+div#con_box {
+	width:180px; 
+	float:left;
+}
+
+.services h3 {
+	margin:0px;
+	padding:0px;
+	height:auto;
+	display:block; 
+	text-align:center;
+}
+
+.services h3  a { 
+	margin:0px;
+	padding:15px;
+}
+
+div.services {
+	width: 170px;
+	height:50px;
+	background-color: #c7c7c7;
+	border: solid 1px #8c8c8c;
+	padding:0px;
+	margin-bottom: 10px;
+	text-align:center;
+}
+
+div.services:hover {
+	background-color: #d7d7d7; 
+}
+
+div#content {
+	width:450px; 
+	margin-left:100px;
+	float:left;
+}
+
+div#studies {
+	width:630px;
+	margin-left:100px;
+	float:left;
+	
+}
+
+div#studies div ul {
+	font-size:14px;
+	font-weight:bold;
+	display:block;
+
+}
+
+div#studies div ul a {
+	text-decoration:underline;
+}
+
+div#kingdom  {
+	float:left;
+	margin:0px 10px 0px 10px;
+}
+div#anointing  {
+	float:left;
+	margin:0px 10px 0px 10px;
+}
+div#hundredfold  {
+	float:left;
+	margin:0px 10px 0px 10px;
+}
+
+div#exact_knowledge  {
+	float:left;
+	margin:0px 10px 0px 10px;
+}
+
+
+div#uconstruct {
+	float:right;
+}
+
+div#content h4 {
+	margin-bottom: 10px;
+	font-size: 11pt;
+}
+
+div.clear {
+	clear:both;
+
+}
+
+div#flag {
+	position:absolute;
+	bottom:20px;
+	left:0px;
+	height:10px;
+	width:100%;
+	background: transparent url('/dcoda.net/gen_rsrc/flags.jpg') no-repeat bottom left;
+}
+
+div#footer {
+	position:absolute;
+	bottom:0px;
+	left:0px;
+	width:100%;
+}
+
+p.foot {
+	text-align:center; 
+}
+
