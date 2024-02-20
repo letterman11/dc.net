@@ -104,6 +104,10 @@ div.top_menu {
         //background-color: #33ccff;
 }
 
+.top_menu .drop:hover  {
+        background-color: azure;
+        //background-color: #33ccff;
+}
 
 .top_menu div.con_menu li ul li  {
 	padding:1px 1px 0px;
