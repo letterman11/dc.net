@@ -127,12 +127,22 @@ div.top_menu {
 	border-bottom:1px solid #b7b7b7; 
 }
 
+.top_menu div.con_menu div div.drop-content li:hover {
+	padding:1px 1px 0px;
+	border-bottom:1px solid #b7b7b7; 
+	background-color: azure;
+}
+
+
+/*
+
 .top_menu div.con_menu div li.level1:hover {
 	padding:1px 1px 0px;
 	border-bottom:1px solid #b7b7b7; 
 	background-color: azure;
 }
 
+*/
 
 .image {
 	margin:25px 0px 25px 0px;
@@ -185,41 +195,6 @@ div#content {
 	float:left;
 }
 
-div#studies {
-	width:630px;
-	margin-left:100px;
-	float:left;
-	
-}
-
-div#studies div ul {
-	font-size:14px;
-	font-weight:bold;
-	display:block;
-
-}
-
-div#studies div ul a {
-	text-decoration:underline;
-}
-
-div#kingdom  {
-	float:left;
-	margin:0px 10px 0px 10px;
-}
-div#anointing  {
-	float:left;
-	margin:0px 10px 0px 10px;
-}
-div#hundredfold  {
-	float:left;
-	margin:0px 10px 0px 10px;
-}
-
-div#exact_knowledge  {
-	float:left;
-	margin:0px 10px 0px 10px;
-}
 
 
 div#uconstruct {
