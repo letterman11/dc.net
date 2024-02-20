@@ -46,7 +46,7 @@ ul.con_menu {
 	//height:85px;
 	height:55px;
 	background-color: lightblue;
-	background: lightblue url('/dcoda.net/gen_rsrc/fish_symbol.png');
+	background: lightblue url('/static/images/fish_symbol.png');
 	background-size: 50% 100%;
 }
 

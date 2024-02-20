@@ -50,7 +50,7 @@ div.con_menu {
 	background: black url('/dcoda.net/gen_rsrc/INVERT_DCBANNER_CROP_594_35.jpg') no-repeat bottom center; */
 //	background-color: lightblue;
 //	background: lightblue url('/dcoda.net/gen_rsrc/fish_symbol.png');
-	background: lightblue url('/images/fish_symbol.png');
+	background: lightblue url('/static/images/fish_symbol.png');
 }
 
 div.center_div {
