@@ -46,8 +46,6 @@ div.con_menu {
 	display:block;
 	width:100%;
 	height:85px;
-	/*background-color: black;
-	background: black url('/dcoda.net/gen_rsrc/INVERT_DCBANNER_CROP_594_35.jpg') no-repeat bottom center; */
 //	background-color: lightblue;
 //	background: lightblue url('/dcoda.net/gen_rsrc/fish_symbol.png');
 	background: lightblue url('/static/images/fish_symbol.png');
@@ -94,6 +92,7 @@ div.top_menu {
         background-color: #33ccff;
         border: solid grey 1px;
         font-weight:bold;
+        text-align:center;
 }
 
 .top_menu .top-level:hover  {
@@ -162,32 +161,6 @@ div#con_box {
 	float:left;
 }
 
-.services h3 {
-	margin:0px;
-	padding:0px;
-	height:auto;
-	display:block; 
-	text-align:center;
-}
-
-.services h3  a { 
-	margin:0px;
-	padding:15px;
-}
-
-div.services {
-	width: 170px;
-	height:50px;
-	background-color: #c7c7c7;
-	border: solid 1px #8c8c8c;
-	padding:0px;
-	margin-bottom: 10px;
-	text-align:center;
-}
-
-div.services:hover {
-	background-color: #d7d7d7; 
-}
 
 div#content {
 	width:450px; 
