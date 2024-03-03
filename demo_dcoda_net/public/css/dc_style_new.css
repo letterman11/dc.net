@@ -79,7 +79,7 @@ div.top_menu {
  *
  */
 
-.top_menu div.con_menu li.level1 {
+.top_menu div.con_menu div.drop div.drop-content li {
 	text-align:left;
 }
 
@@ -121,7 +121,7 @@ div.top_menu {
 	border-bottom:1px solid #b7b7b7;  
 }
 
-.top_menu div.con_menu div li.level1 {
+.top_menu div.con_menu div.drop-content li {
 	padding:1px 1px 0px;
 	border-bottom:1px solid #b7b7b7; 
 }

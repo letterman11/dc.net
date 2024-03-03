@@ -126,7 +126,7 @@ div.top_menu {
 }
 
 
-.top_menu div.con_menu div li.level1:hover {
+.top_menu div.con_menu div.drop div.drop-content li:hover {
        // background-color: #33ccee;
         background-color: azure;
 /*	background-color: #e8e8e8;  */
