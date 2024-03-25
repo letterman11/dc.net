@@ -1,0 +1,4 @@
+git remote set-url origin git@github.com:OWNER/REPOSITORY.git
+------------------------------------------------------------------
+git remote set-url origin git@github.com/letterman11/perlMojo.git
+git remote set-url origin git@github.com/letterman11/dc.net.git
