@@ -1,0 +1,20 @@
+#!/bin/bash
+
+
+export HOME=/home/ubuntu
+export PATH=/home/ubuntu/bin:/usr/bin:$PATH
+
+
+cd $HOME/pyProjects/pyUp/py3x/bottleMarks
+/usr/bin/python3 bottleWebMarks.py
+
+cd $HOME/perlMojo/MojoWebMarks
+/usr/bin/hypnotoad MojoWebMarks
+
+
+cd $HOME/js_projects/chatBoxExpress
+/home/ubuntu/bin/pm2 start bin/www
+
+
+cd $HOME/perlMojo/syncMarkWeb/servMarkWeb/
+sh no_hup_webmark_serv_start.sh
