@@ -1,3 +1,25 @@
+git init <directory> Create empty Git repo in specified directory. Run with no arguments to initialize the current directory as a git repository.
+
+git config --global user.name <name>
+
+git branch
+
+git checkout -b <branch>
+
+git clone
+
+git fetch
+
+git pull
+
+git worktree add <path> <remote>/<branch>  #add a worktree with existing branch
+
+git worktree add --track -b <branch> <path> <remote>/<branch> #add worktree and create a new branch tracking remote branch
+
+git worktree add --track -b marksPWA marksPWA origin/marksPWA
+
+git worktree add --track  -b marksPWAPage  marksPWAPage origin/marksPWAPage
+
 git remote set-url origin git@github.com:OWNER/REPOSITORY.git
 ------------------------------------------------------------------
 git remote set-url origin git@github.com:letterman11/perlMojo.git
