@@ -1,12 +1,17 @@
 <VirtualHost *:443>
-    DocumentRoot /home/ubuntu/dcoda_net/public 
     ServerName  dcoda.net 
     ServerAlias www.dcoda.net
+    DocumentRoot "/home/ubuntu/dcoda_net/public" 
 
     SSLEngine on
 
-    #SSLCertificateFile /etc/letsencrypt/live/dcoda.net/fullchain.pem
-    #SSLCertificateKeyFile /etc/letsencrypt/live/dcoda.net/privkey.pem
+    Header set Cache-Control "no-store, no-cache, must-revalidate, post-check=0, pre-check=0"
+    Header set Pragma "no-cache"
+
+#    Redirect / https://demo.dcoda.net/
+
+#    SSLCertificateFile /etc/letsencrypt/live/dcoda.net/fullchain.pem
+#    SSLCertificateKeyFile /etc/letsencrypt/live/dcoda.net/privkey.pem
 
     SSLCertificateFile /etc/letsencrypt/live/dcoda.net-0001/fullchain.pem
     SSLCertificateKeyFile /etc/letsencrypt/live/dcoda.net-0001/privkey.pem
@@ -14,39 +19,40 @@
     ErrorLog /home/ubuntu/dcoda_net/logs/error_dcoda_net.log
     CustomLog /home/ubuntu/dcoda_net/logs/access.log combined
 
-    ProxyPass "/pyWebMarks" "http://172.26.10.126:8086"
-    ProxyPassReverse "/pyWebMarks" "http://172.26.10.126:8086" 
+    #ProxyPass "/pyWebMarks" "http://172.26.15.107:8086"
+    #ProxyPassReverse "/pyWebMarks" "http://172.26.15.107:8086" 
 
     Alias  "/static" "/home/ubuntu/dcoda_net/public/static"
-
-#    ProxyPass "/expressChat" "http://172.26.10.126:3010/chatterBox"
-#    ProxyPassReverse "/expressChat" "http://172.26.10.126:3010/chatterBox" 
-
-    ProxyPass "/expressChat" "http://172.26.10.126:3010/expressChat"
-    ProxyPassReverse "/expressChat" "http://172.26.10.126:3010/expressChat" 
-
-    ProxyPass "/mojoMarks" "http://172.26.10.126:3005"
-    ProxyPassReverse "/mojoMarks" "http://172.26.10.126:3005" 
+   
 
     <Directory />
-                Options FollowSymLinks
-                AllowOverride None
+        Options FollowSymLinks
+        AllowOverride None
+    #	Header set Cache-Control "no-store, no-cache, must-revalidate, post-check=0, pre-check=0"
+    #	Header set Pragma "no-cache"
     </Directory>
 
     <Directory /home/ubuntu/dcoda_net/public/>
-                Options FollowSymLinks MultiViews
-                AllowOverride None
-                Require all granted
+    	Options FollowSymLinks
+    	AllowOverride None
+    	Require all granted
      </Directory>
 
+    <Directory /home/ubuntu/dcoda_net/public/apache_docs/>
+    	Options +Indexes
+    	AllowOverride None
+    	Require all granted
+     </Directory>
 
 
      <Directory "/home/ubuntu/dcoda_net/cgi-bin">
-     Require all granted
-     Options ExecCGI FollowSymLinks
+     	Require all granted
+     	Options ExecCGI FollowSymLinks
+     	AddHandler cgi-script .cgi .pl
      </Directory>
 
      ScriptAlias  /cgi-bin/stockApp/cgi-bin/ "/home/ubuntu/dcoda_net/cgi-bin/stockApp/cgi-bin/"
+     #ScriptAlias  /cgi-bin/stockApp/cgi-bin/ "/home/ubuntu/dcoda_net/cgi-bin/stockApp/"
      ScriptAlias  /chatterBox/cgi-bin/ "/home/ubuntu/dcoda_net/cgi-bin/chatterBox/cgi-bin/"
      ScriptAlias  /cgi-bin/pollCenter/cgi-bin/ "/home/ubuntu/dcoda_net/cgi-bin/pollCenter/cgi-bin/"
      ScriptAlias  /cgi-bin/webMarks/cgi-bin/ "/home/ubuntu/dcoda_net/cgi-bin/webMarks/cgi-bin/"
@@ -59,8 +65,8 @@
 
 
 <VirtualHost *:80>
-    ServerAdmin webmaster@localhost_dcoda_net
     ServerName  dcoda.net 
+    ServerAdmin webmaster@localhost_dcoda_net
     ServerAlias www.dcoda.net
     DocumentRoot /home/ubuntu/dcoda_net/public 
 
@@ -74,24 +80,20 @@
    Redirect permanent / https://dcoda.net/
 
    <Directory />
-                Options FollowSymLinks
-                AllowOverride None
+   	Options FollowSymLinks
+   	AllowOverride None
    </Directory>
 
    <Directory /home/ubuntu/dcoda_net/public/>
-                Options FollowSymLinks MultiViews
-                AllowOverride None
-                Require all granted
+   	Options FollowSymLinks MultiViews
+   	AllowOverride None
+   	Require all granted
    </Directory>
 
-<Directory "/home/ubuntu/dcoda_net/cgi-bin">
-# AllowOverride All
-# Allow from all
-     Require all granted
-     Options ExecCGI FollowSymLinks
-#    SetHandler cgi-script 
-#    AddHandler cgi-script .cgi
-</Directory>
+   <Directory "/home/ubuntu/dcoda_net/cgi-bin">
+   	Require all granted
+   	Options ExecCGI FollowSymLinks
+   </Directory>
 
   ScriptAlias  /cgi-bin/stockApp/cgi-bin/ "/home/ubuntu/dcoda_net/cgi-bin/stockApp/cgi-bin/"
   ScriptAlias  /cgi-bin/chatterBox/cgi-bin/ "/home/ubuntu/dcoda_net/cgi-bin/chatterBox/cgi-bin/"
@@ -100,20 +102,62 @@
 
 </VirtualHost>
 
-<VirtualHost *:80>
 
+
+<VirtualHost *:443>
     ServerName  demo.dcoda.net
     ServerAdmin webmaster@localhost
-    DocumentRoot "/home/ubuntu/demo_net/public"
+    DocumentRoot "/home/ubuntu/demo_dcoda_net/public"
 
+    SSLEngine on
 
-<Directory "/home/ubuntu/demo_net/public">
+    Header set Cache-Control "no-store, no-cache, must-revalidate, post-check=0, pre-check=0"
+    Header set Pragma "no-cache"
 
+    SSLCertificateFile /etc/letsencrypt/live/demo.dcoda.net/fullchain.pem
+    SSLCertificateKeyFile /etc/letsencrypt/live/demo.dcoda.net/privkey.pem
 
-    Options FollowSymLinks
-    Require all granted
+#    SSLCertificateFile /etc/letsencrypt/live/dcoda.net/fullchain.pem
+#    SSLCertificateKeyFile /etc/letsencrypt/live/dcoda.net/privkey.pem
 
-</Directory>
+    #SSLCertificateFile /etc/letsencrypt/live/dcoda.net-0001/fullchain.pem
+    #SSLCertificateKeyFile /etc/letsencrypt/live/dcoda.net-0001/privkey.pem
+
+    ErrorLog /home/ubuntu/demo_dcoda_net/logs/demo_error_dcoda_net.log
+    CustomLog /home/ubuntu/demo_dcoda_net/logs/demo_access.log combined
+
+    ProxyRequests off
+
+    ProxyPass "/pyWebMarks" "http://172.26.15.107:8086"
+    ProxyPassReverse "/pyWebMarks" "http://172.26.15.107:8086"
+
+    ProxyPass "/exWebMarks" "http://172.26.15.107:8088"
+    ProxyPassReverse "/exWebMarks" "http://172.26.15.107:8088"
+
+    ProxyPass "/ex2WebMarks" "http://172.26.15.107:8089"
+    ProxyPassReverse "/ex2WebMarks" "http://172.26.15.107:8089"
+
+    ProxyPass "/ex3WebMarks" "http://172.26.15.107:8090"
+    ProxyPassReverse "/ex3WebMarks" "http://172.26.15.107:8090"
+
+    ### symlink to dcoda_net
+    Alias  "/static" "/home/ubuntu/demo_dcoda_net/public/static"
+
+    ProxyPass "/expressChat" "http://172.26.15.107:3010/expressChat"
+    ProxyPassReverse "/expressChat" "http://172.26.15.107:3010/expressChat"
+
+#    ProxyPass "/expressChat" "http://172.26.15.107:3010"
+#    ProxyPassReverse "/expressChat" "http://172.26.15.107:3010"
+
+    ProxyPass /mojoMarks http://172.26.15.107:3005  retry=1 acquire=3000 connectiontimeout=15 timeout=600 Keepalive=On
+    ProxyPassReverse /mojoMarks http://172.26.15.107:3005
+
+ 
+    <Directory "/home/ubuntu/demo_dcoda_net/public">
+      Options FollowSymLinks MultiViews
+      Require all granted
+    </Directory>
 
 
 </VirtualHost>
+
