@@ -1,0 +1,4 @@
+#python sql_server drivers
+#____________________________
+sudo apt-get install unixodbc-dev
+pip install pyodbc 
