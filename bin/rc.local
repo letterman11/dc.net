@@ -1,0 +1,13 @@
+#!/bin/bash
+
+#--------------------------------------
+# RC LOCAL SCRIPT EXECUTED AT
+# END OF SYSTEM STARTUP
+# BY RC LOCAL SERVICE
+#--------------------------------------
+
+
+
+sh /home/${USER}/bin/super_simple_start.sh.one
+
+exit 0
