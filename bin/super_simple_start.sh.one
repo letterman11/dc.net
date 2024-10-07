@@ -7,12 +7,21 @@ export PATH=/home/ubuntu/bin:/usr/bin:$PATH
 
 cd $HOME/pyProjects/pyUp/py3x/bottleMarks
 /usr/bin/python3 bottleWebMarks.py
+#/usr/bin/env gunicorn -D -w 3 bottleWebMarks:app
+
+cd $HOME/pyUp/py3x/marksPWA/py3x/bottleMarks
+/usr/bin/python3 bottleWebMarks.py
+
+cd $HOME/pyUp/py3x/marksPagination/py3x/bottleMarks
+/usr/bin/python3 bottleWebMarks.py
+
 
 cd $HOME/perlMojo/MojoWebMarks
 /usr/bin/hypnotoad MojoWebMarks
 
 
-cd $HOME/js_projects/chatBoxExpress
+cd $HOME/chatBoxExpress
+#cd $HOME/js_projects/chatBoxExpress
 /home/ubuntu/bin/pm2 start bin/www
 
 
