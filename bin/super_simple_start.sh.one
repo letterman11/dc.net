@@ -5,9 +5,10 @@ export HOME=/home/ubuntu
 export PATH=/home/ubuntu/bin:/usr/bin:$PATH
 
 
-cd $HOME/pyProjects/pyUp/py3x/bottleMarks
+cd $HOME/pyUp/py3x/bottleMarks
+#cd $HOME/pyProjects/pyUp/py3x/bottleMarks
 #/usr/bin/python3 bottleWebMarks.py
-/usr/bin/env gunicorn -b 0.0.0.0:8086 -D -w 3 bottleWebMarks:app
+/usr/bin/gunicorn -b 0.0.0.0:8086 -D -w 3 bottleWebMarks:app
 
 cd $HOME/pyUp/py3x/marksPWA/py3x/bottleMarks
 /usr/bin/python3 bottleWebMarks.py
@@ -26,4 +27,5 @@ cd $HOME/chatBoxExpress
 
 
 cd $HOME/perlMojo/syncMarkWeb/servMarkWeb/
+mkdir logs
 sh no_hup_webmark_serv_start.sh
