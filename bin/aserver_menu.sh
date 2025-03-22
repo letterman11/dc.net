@@ -35,18 +35,18 @@ function main()
     read b
 
     case $b in
-		1) 
-		menu_db_select "A"
-		;;
-		2)
-		menu_db_select "C"
-		;;
-		3)
-		menu_db_select "N"
-		;;
-		4)
-		menu_some_select 
-		;;
+        1) 
+        menu_db_select "A"
+        ;;
+        2)
+        menu_db_select "C"
+        ;;
+        3)
+        menu_db_select "N"
+        ;;
+        4)
+        menu_some_select 
+        ;;
     esac
 
 }
@@ -78,7 +78,7 @@ END_MSG
 ##########
 function menu_db_select()
 {
-	clear
+    clear
 
 cat<<END_MSG
 $1
