@@ -1,29 +1,74 @@
 #!/bin/bash
+set -x
 
 
-export HOME=/home/ubuntu
-export PATH=/home/ubuntu/bin:/usr/bin:$PATH
+log() {
 
+cat<<END_MSG
+-------------------------------------
+$1
+-------------------------------------
+END_MSG
+
+}
+
+if [[ -z $USER ]]; then
+
+export HOME=/home/angusbrooks
+export PATH=/home/angusbrooks/bin:/usr/bin:$PATH
+export GUNICORNHOME=/home/angusbrooks/bottlePy/bin
+
+else
+
+log "USER VAR SET "
+
+export HOME=/home/$USER
+export PATH=/home/$USER/bin:/usr/bin:$PATH
+export GUNICORNHOME=/home/$USER/bottlePy/bin
+
+
+fi
+
+source ~/bottlePy/bin/activate
+
+log "EXEC OF BOTTLE APPS"
 
 cd $HOME/pyUp/py3x/bottleMarks
 #cd $HOME/pyProjects/pyUp/py3x/bottleMarks
 #/usr/bin/python3 bottleWebMarks.py
-/usr/bin/gunicorn -b 0.0.0.0:8086 -D -w 3 bottleWebMarks:app
+#/usr/bin/gunicorn -b 0.0.0.0:8086 -D -w 3 bottleWebMarks:app
+$GUNICORNHOME/gunicorn -b 0.0.0.0:8086 -D -w 2 bottleWebMarks:app
 
 cd $HOME/pyUp/py3x/marksPWA/py3x/bottleMarks
-/usr/bin/python3 bottleWebMarks.py
+$GUNICORNHOME/gunicorn -b 0.0.0.0:8088 -D -w 2 bottleWebMarks:app
+#/usr/bin/python3 bottleWebMarks.py
 
-cd $HOME/pyUp/py3x/marksPagination/py3x/bottleMarks
-/usr/bin/python3 bottleWebMarks.py
+cd $HOME/pyUp/py3x/marksPWAPage/py3x/bottleMarks
+#cd $HOME/pyUp/py3x/marksPagination/py3x/bottleMarks
+$GUNICORNHOME/gunicorn -b 0.0.0.0:8089 -D -w 2 bottleWebMarks:app
+#/usr/bin/python3 bottleWebMarks.py
+deactivate
 
+log "END EXEC OF BOTTLE APPS"
+
+
+log "EXEC OF MOJOMARKS APP"
 
 cd $HOME/perlMojo/MojoWebMarks
 /usr/bin/hypnotoad MojoWebMarks
 
+log "END EXEC OF MOJOMARKS APP"
+
+
+log "EXEC OF CHATBOX EXPRESS"
+
 
 cd $HOME/chatBoxExpress
 #cd $HOME/js_projects/chatBoxExpress
-/home/ubuntu/bin/pm2 start bin/www
+#/home/ubuntu/bin/pm2 start bin/www
+/usr/local/bin/pm2 start bin/www
+
+log "EXEC OF WEBMARKS NET SCRIPT"
 
 
 cd $HOME/perlMojo/syncMarkWeb/servMarkWeb/
