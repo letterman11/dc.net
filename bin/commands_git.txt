@@ -18,6 +18,8 @@ git worktree add --track -b <branch> <path> <remote>/<branch> #add worktree and 
 
 git worktree add --track -b marksPWA marksPWA origin/marksPWA
 
+git worktree add --track -b marksPagination marksPagination origin/marksPagination
+
 git worktree add --track  -b marksPWAPage  marksPWAPage origin/marksPWAPage
 
 git remote set-url origin git@github.com:OWNER/REPOSITORY.git
