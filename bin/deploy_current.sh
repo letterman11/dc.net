@@ -139,7 +139,7 @@ for app in ${CLASSIC_APPS[@]}
 		cp -r $git_master/perlApps/$app/web_src $main_home/public/$app/
         cd $main_home/public/$app
 
-		[[ $app == "chatterBox" ]] && ( $LINK $main_home/public/$app/web_src/chatterBox.html index.htm ) 
+		[[ $app == "chatterBox" ]] && ( $LINK $main_home/public/$app/web_src/chatterbox.html index.htm ) 
         $LINK $main_home/public/$app/web_src/index.htm . 
 
 	done
