@@ -14,24 +14,37 @@ export user=dococt
 
 declare -a CLASSIC_APPS=("stockApp" "webMarks" "chatterBox" "pollCenter")
 
-mv $classic_apps_git/StockApp $class_apps_git/stockApp
+#--- one off rename for stockApp
+mv $classic_apps_git/StockApp $classic_apps_git/stockApp
 
-func create_git_master_dir()
+function create_git_master_dir()
 {
-	mkdir ${HOME}/$git_master
+	mkdir $git_master
 }
 
-func clone_repos()
+function clone_repos()
 {
+	cd $git_master
 	git clone $class_apps_git
 
 }
 
-func create_main_app_dirs()
+function create_main_app_dirs()
 {
 	mkdir $main_home
 	mkdir $demo_home
 	mkdir $games_home
+
+}
+
+function apache2_setup()
+{
+	sudo a2enmod proxy
+	sudo a2enmod proxy_http
+	sudo a2enmod proxy_balancer
+	sudo a2enmod lbmethod_byrequests
+	sudo a2enmod cgi
+	sudo a2enmod ssl
 
 }
 
@@ -56,8 +69,7 @@ sudo cpanm CGI::Cookie
 sudo cpanm DBI
 sudo cpanm DBD::SQLite
 sudo cpanm DBD::mysql
-
-
+sudo cpanm DateTime
 
 #--- cgi-bins
 for app in ${CLASSIC_APPS[@]}
@@ -110,7 +122,7 @@ for app in ${CLASSIC_APPS[@]}
 
 			done
 	done
-
+		
 
 cat<<comm
 1a: create git master dir
