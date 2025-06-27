@@ -1,8 +1,9 @@
 #!/bin/bash
-set -x
+#set -x
 
 export git_master=$HOME/lmate_master
 export classic_apps_git=https://github.com/letterman11/perlApps
+export main_lib_git=https://github.com/letterman11/dc.net
 
 export main_home=$HOME/dcoda_net
 export demo_home=$HOME/demo_dcoda_net
@@ -16,17 +17,22 @@ export user=dococt
 
 declare -a CLASSIC_APPS=("stockApp" "webMarks" "chatterBox" "pollCenter")
 
+declare -a SRCs=(".js" ".pl" ".htm" ".html" ".cgi" ".css")
 
+
+#--install git
 function install_git()
 {
 	sudo apt install -y git
 }
 
+#--install apache3
 function install_apache()
 {
 	sudo apt install -y apache2
 }
 
+#--- install mysql
 function install_mysql_client()
 {
 	sudo apt install -y $mysql_client 
@@ -41,6 +47,7 @@ function clone_git_repos()
 {
 	cd $git_master
 	git clone $class_apps_git
+	git clone $main_lib_git
 
 	#--- one off rename for stockApp
 	mv $classic_apps_git/StockApp $classic_apps_git/stockApp
@@ -129,11 +136,11 @@ for app in ${CLASSIC_APPS[@]}
 
 #--- public gen_rsrc files
 for app in ${CLASSIC_APPS[@]}
-	do
-		mkdir $main_home/public/$app
-		cp -R $git_master/perlApps/$app/gen_rsrc $main_home/public/$app/
+do
+	mkdir $main_home/public/$app
+	cp -R $git_master/perlApps/$app/gen_rsrc $main_home/public/$app/
 
-	done
+done
 
 chmod -R 0755 $main_home
 
@@ -143,18 +150,64 @@ chmod -R 0755 $main_home
 function populate_apps_schema()
 {
 for app in ${CLASSIC_APPS[@]}
+do
+	cd $main_home/private/$app/data		
+
+	for exec_data in `ls *.sql`
 	do
-		cd $main_home/private/$app/data		
+		mysql -u $user -p -h $data_server --port $port < $exec_data
 
-		for exec_data in `ls *.sql`
-			do
-				mysql -u $user -p -h $data_server --port $port < $exec_data
-
-			done
 	done
+done
 		
 }
 
+function one_offs()
+{
+	cd $main_lib_git 
+	cp lib/sessionFile.dat $main_home/lib
+
+}
+
+function replace_user()
+{
+	cd $main_home
+	for src_file in ${SRCs[@]}
+	do
+		for file in `find . -iname *$src_file -type f`
+		do
+			#sed -i 's#$old_user#$new_user#' $i
+			regsub $file $old_user $new_user
+		done
+	done
+}
+
+function regsub()
+{
+   perl -e '
+       open(FH, "< $ARGV[0]") or die "Failed open $!";
+       my @lines = <FH>; 
+       close FH;
+
+       open(FH, "+> $ARGV[0]") or die "Failed open $!";
+
+       for(@lines)
+       {
+        s#$ARGV[1]#$ARGV[2]#g;
+        print FH $_;
+       }
+       close FH;
+
+   ' $1 "$2" "$3"
+}
+
+
+function install_infrastructure()
+{	
+	install_git
+	install_apache2
+	install_mysql_client
+}
 
 function main()
 {
@@ -170,9 +223,36 @@ function main()
 	install_apache2						#--10
 	apache2_setup						#--11
 
+	one_offs
+	replace_user
+
 }
 
 
+function usage()
+{
+
+cat<<mesg
+deploy_current.sh [-u | -p ] 
+                  -u <user> user logged in
+                  -p <port> database port
+
+mesg
+}
+
+
+
+while getopts "u:p:f:" opt; do
+    case $opt in
+       u) new_user=$OPTARG;;
+       p) port=$OPTARG;;
+       ?) usage;;
+    esac
+done
+
+
+comm()
+{
 cat<<comm
 1a: create git master dir
 1b: git clone repoistories
@@ -196,3 +276,4 @@ cat<<comm
 5:  cp over any sqlite databases to db dir of main app dir
 
 comm
+}
