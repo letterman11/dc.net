@@ -13,6 +13,7 @@ export games_home=$HOME/games_dcoda_net
 export mysql_client=mysql-client-core-8.0 
 
 export data_server=cloud_server.cloud.one
+
 export port=3306
 export user=dococt
 
@@ -28,13 +29,13 @@ function install_git()
 	sudo apt install -y git
 }
 
-#--install apache3
+#--install apache2
 function install_apache2()
 {
 	sudo apt install -y apache2
 }
 
-#--- install mysql
+#--- install mysql client libs
 function install_mysql_client()
 {
 	sudo apt install -y $mysql_client 
@@ -63,6 +64,12 @@ function create_main_app_dirs()
 	mkdir $demo_home
 	mkdir $games_home
 
+
+	mkdir $main_home/logs
+	mkdir $demo_home/logs
+	mkdir $games_home/logs
+
+
 }
 
 function apache2_setup()
@@ -85,7 +92,7 @@ function create_main_sub_dirs()
 	mkdir $main_home/public
 	mkdir $main_home/public/gen_rsrc
 	mkdir $main_home/public/static
-	mkdir $main_home/public/static/images
+#	mkdir $main_home/public/static/
 	mkdir $main_home/lib
 
 	chmod -R 0777 $main_home/db
@@ -93,6 +100,16 @@ function create_main_sub_dirs()
 
 }
 
+function create_demo_sub_dirs()
+{
+	mkdir $demo_home/public
+	mkdir $demo_home/public/gen_rsrc
+	mkdir $demo_home/public/static
+	mkdir $demo_home/public/images
+	mkdir $demo_home/public/js
+	mkdir $demo_home/public/css
+
+}
 
 #-- perl prereqs download & installs
 function install_cgi_mods()
@@ -149,7 +166,9 @@ for app in ${CLASSIC_APPS[@]}
 for app in ${CLASSIC_APPS[@]}
 	do
 		mkdir $main_home/public/$app/images
-		cp  $git_master/perlApps/$app/images/* $main_home/public/$app/images/
+		cp $git_master/perlApps/$app/gen_rsrc/* $main_home/public/$app/images/
+		cp $git_master/perlApps/$app/gen_rsrc/* $main_home/public/$app/gen_rsrc/
+		cp $main_home/public/$app/images/* $main_home/public/images/
     done
 
 #--- public gen_rsrc files
@@ -185,6 +204,37 @@ function one_offs()
 	cd $git_master
 	cd dc.net
 	cp lib/sessionFile.dat $main_home/lib
+
+	cp $git_master/dc.net/public/index.htm $main_home/public/
+	cp $git_master/dc.net/public/index.htm $main_home/public/
+
+	cp -R $git_master/dc.net/public/css $main_home/public/css
+	cp -R $git_master/dc.net/public/js $main_home/public/js
+	cp -R $git_master/dc.net/public/images $main_home/public/images
+
+	ln -s $main_home/public/images $main_home/public/static/images
+
+	chown -R angus:angus $main_home
+	chown -R angus:angus $demo_home
+	chown -R angus:angus $games_home
+
+}
+
+function one_offs_two()
+{
+    create_demo_sub_dirs
+
+	cd $git_master
+	cd dc.net
+
+	cp $git_master/dc.net/demo_dcoda_net/public/index.htm* $demo_home/public/
+
+	cp  $git_master/dc.net/demo_dcoda_net/public/css/* $demo_home/public/css
+	cp  $git_master/dc.net/demo_dcoda_net/public/js/* $demo_home/public/js
+	cp  $git_master/dc.net/demo_dcoda_net/public/images/* $demo_home/public/images
+
+	ln -s $demo_home/public/images $demo_home/public/static/images
+
 
 }
 
@@ -246,6 +296,7 @@ function main()
 	apache2_setup						#--11
 
 	one_offs
+	one_offs_two
 	replace_user ubuntu angus
 
 }
