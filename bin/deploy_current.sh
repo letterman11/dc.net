@@ -1,6 +1,7 @@
 #!/bin/bash
 #set -x
 
+export HOME=/home/angus
 export git_master=$HOME/lmate_master
 export classic_apps_git=https://github.com/letterman11/perlApps
 export main_lib_git=https://github.com/letterman11/dc.net
@@ -17,8 +18,9 @@ export user=dococt
 
 declare -a CLASSIC_APPS=("stockApp" "webMarks" "chatterBox" "pollCenter")
 
-declare -a SRCs=(".js" ".pl" ".htm" ".html" ".cgi" ".css")
+declare -a SRCs=(".js" ".pl" ".pm" ".htm" ".html" ".cgi" ".css")
 
+export LINK="ln -s"
 
 #--install git
 function install_git()
@@ -27,7 +29,7 @@ function install_git()
 }
 
 #--install apache3
-function install_apache()
+function install_apache2()
 {
 	sudo apt install -y apache2
 }
@@ -36,6 +38,7 @@ function install_apache()
 function install_mysql_client()
 {
 	sudo apt install -y $mysql_client 
+	sudo apt-get install -y libmysqlclient-dev
 }
 
 function create_git_master_dir()
@@ -46,11 +49,11 @@ function create_git_master_dir()
 function clone_git_repos()
 {
 	cd $git_master
-	git clone $class_apps_git
+	git clone $classic_apps_git
 	git clone $main_lib_git
 
 	#--- one off rename for stockApp
-	mv $classic_apps_git/StockApp $classic_apps_git/stockApp
+	mv $git_master/perlApps/StockApp $git_master/perlApps/stockApp
 
 }
 
@@ -108,21 +111,24 @@ function install_classic_apps_to_main()
 #--- cgi-bins
 for app in ${CLASSIC_APPS[@]}
 	do
-		cp -R $git_master/perlApps/$app/cgi-bin $main_home/cgi-bin/$app/
+		mkdir $main_home/cgi-bin/$app
+		cp -r $git_master/perlApps/$app/cgi-bin $main_home/cgi-bin/$app/
 
 	done
 
 #--- private modules
 for app in ${CLASSIC_APPS[@]}
 	do
-		cp -R $git_master/perlApps/$app/script_src $main_home/private/$app/
+		mkdir $main_home/private/$app
+		cp -r $git_master/perlApps/$app/script_src $main_home/private/$app/
 
 	done
 
 #--- data modules
 for app in ${CLASSIC_APPS[@]}
 	do
-		cp -R $git_master/perlApps/$app/data $main_home/private/$app/
+		mkdir $main_home/private/$app
+		cp -r $git_master/perlApps/$app/data $main_home/private/$app/
 
 	done
 
@@ -130,15 +136,27 @@ for app in ${CLASSIC_APPS[@]}
 for app in ${CLASSIC_APPS[@]}
 	do
 		mkdir $main_home/public/$app
-		cp -R $git_master/perlApps/$app/web_src $main_home/public/$app/
+		cp -r $git_master/perlApps/$app/web_src $main_home/public/$app/
+        cd $main_home/public/$app
+
+		[[ $app == "chatterBox" ]] && ( $LINK $main_home/public/$app/web_src/chatterBox.html index.htm ) 
+        $LINK $main_home/public/$app/web_src/index.htm . 
 
 	done
+
+
+#--- public image files
+for app in ${CLASSIC_APPS[@]}
+	do
+		mkdir $main_home/public/$app/images
+		cp  $git_master/perlApps/$app/images/* $main_home/public/$app/images/
+    done
 
 #--- public gen_rsrc files
 for app in ${CLASSIC_APPS[@]}
 do
 	mkdir $main_home/public/$app
-	cp -R $git_master/perlApps/$app/gen_rsrc $main_home/public/$app/
+	cp -r $git_master/perlApps/$app/gen_rsrc $main_home/public/$app/
 
 done
 
@@ -164,13 +182,17 @@ done
 
 function one_offs()
 {
-	cd $main_lib_git 
+	cd $git_master
+	cd dc.net
 	cp lib/sessionFile.dat $main_home/lib
 
 }
 
 function replace_user()
 {
+	old_user=$1
+	new_user=$2
+
 	cd $main_home
 	for src_file in ${SRCs[@]}
 	do
@@ -218,13 +240,13 @@ function main()
 	create_main_app_dirs				#--5
 	create_main_sub_dirs				#--6
 	install_classic_apps_to_main		#--7
-	populate_apps_schema				#--8
+#	populate_apps_schema				#--8
 	install_cgi_mods					#--9
 	install_apache2						#--10
 	apache2_setup						#--11
 
 	one_offs
-	replace_user
+	replace_user ubuntu angus
 
 }
 
@@ -233,47 +255,30 @@ function usage()
 {
 
 cat<<mesg
+
 deploy_current.sh [-u | -p ] 
                   -u <user> user logged in
                   -p <port> database port
+                  -e populate all app database scripts
+
 
 mesg
 }
 
 
 
-while getopts "u:p:f:" opt; do
+while getopts "aeu:p:" opt; do
+	no_args=0
     case $opt in
        u) new_user=$OPTARG;;
        p) port=$OPTARG;;
-       ?) usage;;
+	   e) populate_apps_schema;; 
+	   ?) usage;;
     esac
 done
 
+if [[ !  $no_args ]];then
+	main
+fi
 
-comm()
-{
-cat<<comm
-1a: create git master dir
-1b: git clone repoistories
 
-2a: mkdir 	dcoda_net
-			demo_dcoda_net
-			games_dcoda_net
-
-2b: mkdir 	in dcoda_net dirs
-		 	cgi-bin
-			private
-			public
-			public/static
-
-3:  cp over app specific (stockApp,webMarks,etc.) cgi-bins to main app dirs in 2a
-3a: cp over app specific private modules to main app dirs in 2a
-3b: cp over app specific public files to main app dirs in 2a
-
-4:  set appropriate permissions in path to main app dirs
-
-5:  cp over any sqlite databases to db dir of main app dir
-
-comm
-}
