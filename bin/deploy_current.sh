@@ -228,13 +228,19 @@ function one_offs_two()
 	cd dc.net
 
 	cp $git_master/dc.net/demo_dcoda_net/public/index.htm* $demo_home/public/
+	cp $git_master/dc.net/demo_dcoda_net/public/css/* $demo_home/public/css
+	cp $git_master/dc.net/demo_dcoda_net/public/js/* $demo_home/public/js
+	cp $git_master/dc.net/demo_dcoda_net/public/images/* $demo_home/public/images
 
-	cp  $git_master/dc.net/demo_dcoda_net/public/css/* $demo_home/public/css
-	cp  $git_master/dc.net/demo_dcoda_net/public/js/* $demo_home/public/js
-	cp  $git_master/dc.net/demo_dcoda_net/public/images/* $demo_home/public/images
+	cp $git_master/dc.net/public/images/* $demo_home/public/images
 
 	ln -s $demo_home/public/images $demo_home/public/static/images
 
+	cp $git_master/pyUp/py3x/bottleMarks/public/images/* $demo_home/public/images/
+	cp $git_master/pyUp/py3x/marksPWA/py3x/bottleMarks/public/images/* $demo_home/public/images/
+
+	cp $git_master/perlMojo/MojoWebMarks/public/images/* $demo_home/public/images/
+	cp $git_master/joule/chatBoxExpress/public/images/* $demo_home/public/images/
 
 }
 
