@@ -3,8 +3,8 @@
 
 export HOME=/home/angus
 export git_master=$HOME/lmate_master
-export classic_apps_git=https://github.com/letterman11/perlApps
-export main_lib_git=https://github.com/letterman11/dc.net
+export classic_apps_git_url=https://github.com/letterman11/perlApps
+export main_lib_git_url=https://github.com/letterman11/dc.net
 
 export main_home=$HOME/dcoda_net
 export demo_home=$HOME/demo_dcoda_net
@@ -50,8 +50,8 @@ function create_git_master_dir()
 function clone_git_repos()
 {
 	cd $git_master
-	git clone $classic_apps_git
-	git clone $main_lib_git
+	git clone $classic_apps_git_url
+	git clone $main_lib_git_url
 
 	#--- one off rename for stockApp
 	mv $git_master/perlApps/StockApp $git_master/perlApps/stockApp
@@ -123,63 +123,78 @@ function install_cgi_mods()
 	sudo cpanm DateTime
 }
 
+
+function deploy_stock_sqlite()
+{
+	cp $git_master/perlApps/stockApp/data/dcoda_acme.gz $main_home/db/dcoda_acme.gz
+	gunzip $main_home/db/dcoda_acme.gz
+
+}
+
 function install_classic_apps_to_main()
 {
-#--- cgi-bins
-for app in ${CLASSIC_APPS[@]}
-	do
-		mkdir $main_home/cgi-bin/$app
-		cp -r $git_master/perlApps/$app/cgi-bin $main_home/cgi-bin/$app/
+	#--- cgi-bins
+	for app in ${CLASSIC_APPS[@]}
+		do
+			mkdir $main_home/cgi-bin/$app
+			cp -r $git_master/perlApps/$app/cgi-bin $main_home/cgi-bin/$app/
 
-	done
+			[[ $app == "stockApp" ]] && ( $LINK $main_home/lib/sessionFile.dat $main_home/cgi-bin/$app/cgi-bin/sessionFile.dat ) 
+			[[ $app == "stockApp" ]] && ( deploy_stock_sqlite )
+			[[ $app == "webMarks" ]] && ( mv $main_home/cgi-bin/$app/cgi-bin/wm_app.cgi $main_home/cgi-bin/$app/cgi-bin/wm_app.cgi.old ) && 
+										( $LINK $main_home/cgi-bin/$app/cgi-bin/wm_app_improved.cgi $main_home/cgi-bin/$app/cgi-bin/wm_app.cgi ) &&
+										( cp $HOME/dcoda_acme.webMarks $main_home/db/ ) 
+			copy_db_file $app
 
-#--- private modules
-for app in ${CLASSIC_APPS[@]}
-	do
-		mkdir $main_home/private/$app
-		cp -r $git_master/perlApps/$app/script_src $main_home/private/$app/
+		done
 
-	done
+	#--- private modules
+	for app in ${CLASSIC_APPS[@]}
+		do
+			mkdir $main_home/private/$app
+			cp -r $git_master/perlApps/$app/script_src $main_home/private/$app/
 
-#--- data modules
-for app in ${CLASSIC_APPS[@]}
-	do
-		mkdir $main_home/private/$app
-		cp -r $git_master/perlApps/$app/data $main_home/private/$app/
+		done
 
-	done
+	#--- data modules
+	for app in ${CLASSIC_APPS[@]}
+		do
+			mkdir $main_home/private/$app
+			cp -r $git_master/perlApps/$app/data $main_home/private/$app/
 
-#--- public files
-for app in ${CLASSIC_APPS[@]}
+		done
+
+	#--- public files
+	for app in ${CLASSIC_APPS[@]}
+		do
+			mkdir $main_home/public/$app
+			cp -r $git_master/perlApps/$app/web_src $main_home/public/$app/
+			cd $main_home/public/$app
+
+			[[ $app == "chatterBox" ]] && ( $LINK $main_home/public/$app/web_src/chatterbox.html index.htm ) 
+			$LINK $main_home/public/$app/web_src/index.htm . 
+
+		done
+
+
+	#--- public image files
+	for app in ${CLASSIC_APPS[@]}
+		do
+			mkdir $main_home/public/$app/images
+			cp $git_master/perlApps/$app/gen_rsrc/* $main_home/public/$app/images/
+			cp $git_master/perlApps/$app/gen_rsrc/* $main_home/public/$app/gen_rsrc/
+			cp $main_home/public/$app/images/* $main_home/public/images/
+		done
+
+	#--- public gen_rsrc files
+	for app in ${CLASSIC_APPS[@]}
 	do
 		mkdir $main_home/public/$app
-		cp -r $git_master/perlApps/$app/web_src $main_home/public/$app/
-        cd $main_home/public/$app
-
-		[[ $app == "chatterBox" ]] && ( $LINK $main_home/public/$app/web_src/chatterbox.html index.htm ) 
-        $LINK $main_home/public/$app/web_src/index.htm . 
+		cp -r $git_master/perlApps/$app/gen_rsrc $main_home/public/$app/
 
 	done
 
-
-#--- public image files
-for app in ${CLASSIC_APPS[@]}
-	do
-		mkdir $main_home/public/$app/images
-		cp $git_master/perlApps/$app/gen_rsrc/* $main_home/public/$app/images/
-		cp $git_master/perlApps/$app/gen_rsrc/* $main_home/public/$app/gen_rsrc/
-		cp $main_home/public/$app/images/* $main_home/public/images/
-    done
-
-#--- public gen_rsrc files
-for app in ${CLASSIC_APPS[@]}
-do
-	mkdir $main_home/public/$app
-	cp -r $git_master/perlApps/$app/gen_rsrc $main_home/public/$app/
-
-done
-
-chmod -R 0755 $main_home
+	chmod -R 0755 $main_home
 
 }
 
@@ -241,6 +256,19 @@ function one_offs_two()
 
 	cp $git_master/perlMojo/MojoWebMarks/public/images/* $demo_home/public/images/
 	cp $git_master/joule/chatBoxExpress/public/images/* $demo_home/public/images/
+
+
+	ln -s $main_home/lib/sessionFile.dat $main_home/cgi-bin/stockApp/cgi-bin/sessionFile.dat
+	ln -s $main_home/db/dcoda_acme.webMarks $main_home/db/sessionDB
+
+	chmod -R 777 $main_home/db
+}
+
+function copy_db_file()
+{
+	app=$1
+#	cp $HOME/bin/stockDbConfig.dat $main_home/cgi-bin/$app/cgi-bin/.
+	cp $HOME/stockDbConfig.dat $main_home/cgi-bin/$app/cgi-bin/.
 
 }
 
