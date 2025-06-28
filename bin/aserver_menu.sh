@@ -12,16 +12,18 @@ AZURE="AZURE_MYSQL"
 AWS="AWS_MYSQL"
 ALI="ALIBABA_MYSQL"
 SQLITE="SQLITE"
+AIVEN="AIVEN_MYSQL"
 
 A1="ALL"
 A2="Classic" 
 A3="NEW"   
 A4="SOME"   
 
-declare -A db_map=([1]="AZURE_MYSQL" [2]="AWS_MYSQL" [3]="SQLITE" [4]="ALIBABA_MYSQL")
+declare -A db_map=([1]="AZURE_MYSQL" [2]="AWS_MYSQL" [3]="SQLITE" [4]="ALIBABA_MYSQL" [5]="AIVEN_MYSQL")
 declare -A env_map=(["A"]=$A1 ["C"]=$A2 ["N"]=$A3 ["S"]=$A4)
 
-declare -a apps=("STOCKAPP" "WEBMARKS" "CHATBOX" "POLLCENTER" "WEBMARKS_PY" "WEBMARKS_BETA" "WEBMARKS_DELTA" "EXPRESSCHAT")
+#declare -a apps=("STOCKAPP" "WEBMARKS" "CHATBOX" "POLLCENTER" "WEBMARKS_PY" "WEBMARKS_BETA" "WEBMARKS_DELTA" "EXPRESSCHAT")
+declare -a apps=("STOCKAPP" "WEBMARKS" "CHATBOX" "POLLCENTER" "WEBMARKS_PY" "WEBMARKS_BETA" "WEBMARKS_DELTA"  "MOJOMARKS" "EXPRESSCHAT")
 
 CONFIG_FILE=$HOME/bin/stockDbConfig.cfg
 
@@ -35,18 +37,18 @@ function main()
     read b
 
     case $b in
-        1) 
-        menu_db_select "A"
-        ;;
-        2)
-        menu_db_select "C"
-        ;;
-        3)
-        menu_db_select "N"
-        ;;
-        4)
-        menu_some_select 
-        ;;
+		1) 
+		menu_db_select "A"
+		;;
+		2)
+		menu_db_select "C"
+		;;
+		3)
+		menu_db_select "N"
+		;;
+		4)
+		menu_some_select 
+		;;
     esac
 
 }
@@ -78,7 +80,7 @@ END_MSG
 ##########
 function menu_db_select()
 {
-    clear
+	clear
 
 cat<<END_MSG
 $1
@@ -90,6 +92,7 @@ $1
 2) AWS Mysql VM Instance 
 3) local SQLite3 DB
 4) Alibaba MySQL DB
+5) AIVEN MySQL DB
 
 END_MSG
 
@@ -158,7 +161,8 @@ cat<<END_MSG
 1) WEBMARKS  
 2) WEBMARKS BETA 
 3) WEBMARKS DELTA
-4) EXPRESSCHAT 
+4) MOJOMARKS
+5) EXPRESSCHAT 
 
 END_MSG
 
@@ -215,7 +219,7 @@ END_MSG
     echo "HERE"
         $HOME/bin/server_menu.pl --app-sel ${env_map[$1]} --db-sel $DB_SEL --app-file $HOME/bin/dcoda_app.cfg #all apps
     else
-        $HOME/bin/server_menu.pl --app-sel ${env_map[$1]} --db-sel $DB_SEL --app-file $HOME/bin/dcoda_app.cfg --app ${apps[$APP_SEL]} #all apps
+        $HOME/bin/server_menu.pl --app-sel ${env_map[$1]} --db-sel $DB_SEL --app-file $HOME/bin/dcoda_app.cfg --app ${apps[$APP_SEL]} #one app
     fi
           
 }
