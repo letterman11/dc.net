@@ -10,6 +10,9 @@ export main_home=$HOME/dcoda_net
 export demo_home=$HOME/demo_dcoda_net
 export games_home=$HOME/games_dcoda_net
 
+export marksBeta=marksPWA
+export marksDelta=marksPWAPage
+
 export mysql_client=mysql-client-core-8.0 
 
 export data_server=cloud_server.cloud.one
@@ -22,23 +25,25 @@ declare -a CLASSIC_APPS=("stockApp" "webMarks" "chatterBox" "pollCenter")
 declare -a SRCs=(".js" ".pl" ".pm" ".htm" ".html" ".cgi" ".css")
 
 export LINK="ln -s"
+export INSTALL_Y="apt install -y"
+
 
 #--install git
 function install_git()
 {
-	sudo apt install -y git
+	sudo $INSTALL_Y git
 }
 
 #--install apache2
 function install_apache2()
 {
-	sudo apt install -y apache2
+	sudo $INSTALL_Y apache2
 }
 
 #--- install mysql client libs
 function install_mysql_client()
 {
-	sudo apt install -y $mysql_client 
+	sudo $INSTALL_Y $mysql_client 
 	sudo apt-get install -y libmysqlclient-dev
 }
 
@@ -57,6 +62,17 @@ function clone_git_repos()
 	mv $git_master/perlApps/StockApp $git_master/perlApps/stockApp
 
 }
+
+function setup_session_db()
+{
+	ln -s $main_home/lib/sessionFile.dat $main_home/cgi-bin/stockApp/cgi-bin/sessionFile.dat
+	ln -s $main_home/db/dcoda_acme.webMarks $main_home/db/sessionDB
+
+	sed -i 's#ubuntu#angus#g' $main_home/lib/sessionFile.dat
+	sed -i 's#plack_home#dcoda_net#g' $main_home/lib/sessionFile.dat
+
+}
+
 
 function create_main_app_dirs()
 {
@@ -114,7 +130,7 @@ function create_demo_sub_dirs()
 #-- perl prereqs download & installs
 function install_cgi_mods()
 {
-	sudo apt install -y cpanminus
+	sudo $INSTALL_Y cpanminus
 	sudo cpanm CGI
 	sudo cpanm CGI::Cookie
 	sudo cpanm DBI
@@ -144,7 +160,7 @@ function install_classic_apps_to_main()
 			[[ $app == "webMarks" ]] && ( mv $main_home/cgi-bin/$app/cgi-bin/wm_app.cgi $main_home/cgi-bin/$app/cgi-bin/wm_app.cgi.old ) && 
 										( $LINK $main_home/cgi-bin/$app/cgi-bin/wm_app_improved.cgi $main_home/cgi-bin/$app/cgi-bin/wm_app.cgi ) &&
 										( cp $HOME/dcoda_acme.webMarks $main_home/db/ ) 
-			copy_db_file $app
+			copy_db_file $app 
 
 		done
 
@@ -172,6 +188,12 @@ function install_classic_apps_to_main()
 			cd $main_home/public/$app
 
 			[[ $app == "chatterBox" ]] && ( $LINK $main_home/public/$app/web_src/chatterbox.html index.htm ) 
+
+			[[ $app == "pollCenter" ]] && ( cp -R $git_master/perlApps/$app/skins $main_home/public/$app/ ) && 
+							( cp -R $git_master/perlApps/$app/js $main_home/public/$app/ ) && 
+							( cp $git_master/perlApps/$app/*.css $main_home/public/$app/ ) &&
+							( cp $git_master/perlApps/$app/index.htm* $main_home/public/$app/ ) 
+
 			$LINK $main_home/public/$app/web_src/index.htm . 
 
 		done
@@ -196,6 +218,102 @@ function install_classic_apps_to_main()
 
 	chmod -R 0755 $main_home
 
+}
+
+function install_new_site_apps()
+{
+	install_py_webMarks
+	install_py_webMarks_beta
+	install_py_webMarks_delta
+	install_py_webMarks_gamma
+	install_expressChat
+
+}
+
+function install_py_webMarks()
+{
+	cd $git_master
+
+	git clone https://github.com/letterman11/pyUp
+	ln -s $git_master/pyUp $HOME/.
+
+	cp $HOME/pyUp/py3x/bottleMarks/public/images/*	$demo_home/public/static/images/	
+
+	ln -s $HOME/pyUp/py3x/bottleMarks/public/css	$demo_home/public/static/css
+	ln -s $HOME/pyUp/py3x/bottleMarks/public/js		$demo_home/public/static/js
+
+	copy_db_file bottleMarks $HOME/pyUp/py3x/bottleMarks
+}
+
+
+function install_py_webMarks_beta()
+{
+	cd $git_master
+	mkdir $demo_home/public/static/ex
+
+
+	cd pyUp/py3x
+	git worktree add --track -b marksPWA marksPWA origin/marksPWA
+
+	cp $HOME/pyUp/py3x/$marksBeta/py3x/bottleMarks/public/images/*	$demo_home/public/static/images/	
+
+	ln -s $HOME/pyUp/py3x/$marksBeta/py3x/bottleMarks/public/css	$demo_home/public/static/ex/.
+	ln -s $HOME/pyUp/py3x/$marksBeta/py3x/bottleMarks/public/js		$demo_home/public/static/ex/.
+
+	copy_db_file $marksBeta $HOME/pyUp/py3x/$marksBeta/py3x/bottleMarks
+
+}
+
+function install_py_webMarks_delta()
+{
+	cd $git_master
+	mkdir $demo_home/public/static/ex2
+
+	cd pyUp/py3x
+	git worktree add --track  -b marksPWAPage  marksPWAPage origin/marksPWAPage
+
+	cp $HOME/pyUp/py3x/$marksDelta/py3x/bottleMarks/public/images/*	$demo_home/public/static/images/	
+
+	ln -s $HOME/pyUp/py3x/$marksDelta/py3x/bottleMarks/public/css	$demo_home/public/static/ex2/.
+	ln -s $HOME/pyUp/py3x/$marksDelta/py3x/bottleMarks/public/js		$demo_home/public/static/ex2/.
+
+	copy_db_file $marksDelta $HOME/pyUp/py3x/$marksDelta/py3x/bottleMarks
+
+}
+
+function install_expressChat()
+{
+	cd $git_master
+
+	git clone https://github.com/letterman11/joule
+	mkdir $demo_home/public/static/
+	
+	ln -s $git_master/joule/chatBoxExpress $HOME/.
+
+	cp $HOME/chatBoxExpress/public/images/*			$demo_home/public/static/images/	
+
+	ln -s $HOME/chatBoxExpress/public/stylesheets	$demo_home/public/static/.
+	ln -s $HOME/chatBoxExpress/public/javascripts	$demo_home/public/static/.
+
+	copy_db_file $expressChat $HOME/chatBoxExpress
+
+}
+
+function install_mojoMarks()
+{
+	cd $git_master
+
+	git clone https://github.com/letterman11/perlMojo
+	mkdir $demo_home/public/static/mojo
+	
+	ln -s $git_master/perlMojo $HOME/.
+
+	cp $HOME/perlMojo/MojoWebMarks/public/images/*	$demo_home/public/static/images/	
+
+	ln -s $HOME/perlMojo/MojoWebMarks/public/css	$demo_home/public/static/mojo/.
+	ln -s $HOME/perlMojo/MojoWebMarks/public/js	$demo_home/public/static/mojo/.
+
+	copy_db_file $mojoMarks $HOME/perlMojo/MojoWebMarks
 }
 
 #--- exec data sqls for each app
@@ -257,9 +375,13 @@ function one_offs_two()
 	cp $git_master/perlMojo/MojoWebMarks/public/images/* $demo_home/public/images/
 	cp $git_master/joule/chatBoxExpress/public/images/* $demo_home/public/images/
 
+	
 
-	ln -s $main_home/lib/sessionFile.dat $main_home/cgi-bin/stockApp/cgi-bin/sessionFile.dat
-	ln -s $main_home/db/dcoda_acme.webMarks $main_home/db/sessionDB
+
+	setup_session_db
+
+	#ln -s $main_home/lib/sessionFile.dat $main_home/cgi-bin/stockApp/cgi-bin/sessionFile.dat
+	#ln -s $main_home/db/dcoda_acme.webMarks $main_home/db/sessionDB
 
 	chmod -R 777 $main_home/db
 }
@@ -267,8 +389,19 @@ function one_offs_two()
 function copy_db_file()
 {
 	app=$1
+    path=$2
+
 #	cp $HOME/bin/stockDbConfig.dat $main_home/cgi-bin/$app/cgi-bin/.
 	cp $HOME/stockDbConfig.dat $main_home/cgi-bin/$app/cgi-bin/.
+
+	if [[ $# > 1 ]];then
+
+		cp $HOME/stockDbConfig.dat $
+
+	else
+		cp $HOME/stockDbConfig.dat $path/.
+
+	fi
 
 }
 
