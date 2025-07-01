@@ -1,4 +1,11 @@
 #!/usr/bin/perl 
+
+#-------------------------------------------------
+# server_menu.pl script to parse and write out 
+# final database config file -- called by bash 
+# script aserver_menu.sh
+#-------------------------------------------------
+
 use strict;
 use feature 'say';
 use Tie::IxHash;
@@ -20,6 +27,9 @@ GetOptions("config-file=s" => \$config_file,
 			"app=s" => \$app,
 			 "debug" => \$DEBUG);
 
+
+#-- global hash that mimics bash script main menu that calls this script
+#------------------------------------------------------------------------
 my %serv_config = ( "ALL" => ["STOCKAPP", "WEBMARKS", "CHATBOX", "POLLCENTER", "WEBMARKS_PY", "WEBMARKS_BETA", "WEBMARKS_DELTA", "EXPRESSCHAT"],
 			  "CLASSIC" => ["STOCKAPP", "WEBMARKS", "CHATBOX", "POLLCENTER"],
 			  "NEW" => ["WEBMARKS_PY", "WEBMARKS_BETA", "WEBMARKS_DELTA", "EXPRESSCHAT"],
@@ -39,8 +49,9 @@ tie my %db_serv_cfg, "Tie::IxHash";      #-- global script config hash holds all
 
 say $ENV{HOME} if $DEBUG;
 
-read_config();
-
+read_config();     #-- called here to read in base 1) stockDbConfig.cfg and again below to read in 
+                   #-- 2) dcoda_app.cfg file for paths to all apps
+                   #-- dual read
 
 $app_sel = ($app_sel =~ /SOME/i) ? "APP" : $app_sel;
 
@@ -84,10 +95,10 @@ sub read_config
 	   #control flow for app_config
       next if defined($_[0]);
 
-      $db_serv_cfg{uc($curr_sec)} = {};
-
-      tie ( %{ $db_serv_cfg{uc($curr_sec)} }, "Tie::IxHash"); 
-
+      $db_serv_cfg{uc($curr_sec)} = {};                       
+                                                               #-- vital
+      tie ( %{ $db_serv_cfg{uc($curr_sec)} }, "Tie::IxHash");  #-- ordered Tie hash statement to keep 
+                                                               #-- section and values in order
      }
      elsif (/=/)
      {
