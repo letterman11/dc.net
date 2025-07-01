@@ -6,9 +6,9 @@ use Getopt::Long;
 
 
 #my $write_db_file = "config.dat.go";
-my $write_db_file = "stockDbConfig.dat";
+my $write_db_file = "stockDbConfig.dat";                          #-- Final output file
 my $default_path =  $ENV{HOME} . "/dcoda_net/cgi-bin/stockApp";
-my $default_config = "$ENV{HOME}/bin/" . "stockDbConfig.cfg";
+my $default_config = "$ENV{HOME}/bin/" . "stockDbConfig.cfg";     #-- 1/2 input files
 my $test_sec = "SQLITE";
 my ($config_file,$app_file,$app_sel,$app,$db_sel);
 my $DEBUG = 0;
@@ -33,9 +33,9 @@ my $path = $ARGV[1] || $default_path;
 
 $path = undef;
 
-
-tie my %db_serv_cfg, "Tie::IxHash";
-
+                                         #-----------------------------------------------------------
+tie my %db_serv_cfg, "Tie::IxHash";      #-- global script config hash holds all database config data
+                                         #-----------------------------------------------------------
 
 say $ENV{HOME} if $DEBUG;
 
@@ -58,7 +58,7 @@ for my $app (@{$serv_config{uc $app_sel}})
 
 
 #--------------------------------------------
-#
+# routine to read data from input configs
 #--------------------------------------------
 sub read_config
 {
@@ -118,7 +118,7 @@ sub read_config
 
 
 #-------------------------------------------
-#
+# write out final stockDbConfig.dat
 #-------------------------------------------
 sub write_config
 {
@@ -149,7 +149,8 @@ here
 
  
 #--------------------------------------------
-#
+# comment out all config except designated
+# section in stockDbConfig.data
 #--------------------------------------------
 sub comm_out
 {
