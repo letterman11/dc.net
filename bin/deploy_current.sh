@@ -1,6 +1,12 @@
 #!/bin/bash
 #set -x
 
+#--------------------------------------------------------------------
+# script: deploy_current
+# author: angus brooks
+# purpose: deploy classic and new apps to dcoda.net website
+#--------------------------------------------------------------------
+
 export HOME=/home/angus
 export git_master=$HOME/lmate_master
 export classic_apps_git_url=https://github.com/letterman11/perlApps
@@ -384,6 +390,8 @@ function one_offs_two()
 	#ln -s $main_home/db/dcoda_acme.webMarks $main_home/db/sessionDB
 
 	chmod -R 777 $main_home/db
+
+	chown -R angus:angus $HOME/*
 }
 
 function copy_db_file()
@@ -453,7 +461,10 @@ function main()
 	install_git							#--1
 	install_mysql_client				#--2
 	create_git_master_dir				#--3
+
 	clone_git_repos						#--4
+	install_new_site_apps				#--4a
+	
 	create_main_app_dirs				#--5
 	create_main_sub_dirs				#--6
 	install_classic_apps_to_main		#--7
