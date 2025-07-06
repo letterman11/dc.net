@@ -5,7 +5,7 @@
 #--------------------------------------------------------------
 # script: aserver_menu.sh				        
 # purpose: script for setting database config of various apps   
-# to the www.dcoda.net web site				       
+# to the dcoda.net web site				       
 #--------------------------------------------------------------
 
 AZURE="AZURE_MYSQL"
@@ -23,7 +23,8 @@ declare -A db_map=([1]="AZURE_MYSQL" [2]="AWS_MYSQL" [3]="SQLITE" [4]="ALIBABA_M
 declare -A env_map=(["A"]=$A1 ["C"]=$A2 ["N"]=$A3 ["S"]=$A4)
 
 #declare -a apps=("STOCKAPP" "WEBMARKS" "CHATBOX" "POLLCENTER" "WEBMARKS_PY" "WEBMARKS_BETA" "WEBMARKS_DELTA" "EXPRESSCHAT")
-declare -a apps=("STOCKAPP" "WEBMARKS" "CHATBOX" "POLLCENTER" "WEBMARKS_PY" "WEBMARKS_BETA" "WEBMARKS_DELTA"  "MOJOMARKS" "EXPRESSCHAT")
+declare -a apps=("STOCKAPP" "WEBMARKS" "CHATBOX" "POLLCENTER" "WEBMARKS_PY" "WEBMARKS_BETA" "WEBMARKS_DELTA"  "MOJOMARKS" "EXPRESSCHAT" "SYNCMARK")
+#declare -a apps=("STOCKAPP" "WEBMARKS" "CHATBOX" "POLLCENTER" "WEBMARKS_PY" "WEBMARKS_BETA" "WEBMARKS_DELTA"  "MOJOMARKS" "EXPRESSCHAT")
 
 CONFIG_FILE=$HOME/bin/stockDbConfig.cfg
 
@@ -163,6 +164,8 @@ cat<<END_MSG
 3) WEBMARKS DELTA
 4) MOJOMARKS
 5) EXPRESSCHAT 
+6) SYNCMARK
+
 
 END_MSG
 

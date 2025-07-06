@@ -14,6 +14,7 @@ use Getopt::Long;
 
 #my $write_db_file = "config.dat.go";
 my $write_db_file = "stockDbConfig.dat";                          #-- Final output file
+my $syncMarkDbFile = "wmDBConfig.dat";
 my $default_path =  $ENV{HOME} . "/dcoda_net/cgi-bin/stockApp";
 my $default_config = "$ENV{HOME}/bin/" . "stockDbConfig.cfg";     #-- 1/2 input files
 my $test_sec = "SQLITE";
@@ -30,9 +31,9 @@ GetOptions("config-file=s" => \$config_file,
 
 #-- global hash that mimics bash script main menu that calls this script
 #------------------------------------------------------------------------
-my %serv_config = ( "ALL" => ["STOCKAPP", "WEBMARKS", "CHATBOX", "POLLCENTER", "WEBMARKS_PY", "WEBMARKS_BETA", "WEBMARKS_DELTA", "EXPRESSCHAT"],
+my %serv_config = ( "ALL" => ["STOCKAPP", "WEBMARKS", "CHATBOX", "POLLCENTER", "WEBMARKS_PY", "WEBMARKS_BETA", "WEBMARKS_DELTA", "EXPRESSCHAT" "SYNCMARK"],
 			  "CLASSIC" => ["STOCKAPP", "WEBMARKS", "CHATBOX", "POLLCENTER"],
-			  "NEW" => ["WEBMARKS_PY", "WEBMARKS_BETA", "WEBMARKS_DELTA", "EXPRESSCHAT"],
+			  "NEW" => ["WEBMARKS_PY", "WEBMARKS_BETA", "WEBMARKS_DELTA", "EXPRESSCHAT", "SYNCMARK"],
 			  "APP" => [$app],
 			);
 
@@ -59,6 +60,8 @@ for my $app (@{$serv_config{uc $app_sel}})
 {
     my $path = read_config($app_file, $app);
     say $write_db_file, " #---------------------#" if $DEBUG;
+
+	$app =~ /syncMark/i and $write_db_file = $syncMarkDbFile; 
     write_config("$path/$write_db_file",$db_sel);
     if ($app =~ /stockapp/i ) {
 	 #one off for stockApp
