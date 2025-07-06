@@ -31,7 +31,7 @@ GetOptions("config-file=s" => \$config_file,
 
 #-- global hash that mimics bash script main menu that calls this script
 #------------------------------------------------------------------------
-my %serv_config = ( "ALL" => ["STOCKAPP", "WEBMARKS", "CHATBOX", "POLLCENTER", "WEBMARKS_PY", "WEBMARKS_BETA", "WEBMARKS_DELTA", "EXPRESSCHAT" "SYNCMARK"],
+my %serv_config = ( "ALL" => ["STOCKAPP", "WEBMARKS", "CHATBOX", "POLLCENTER", "WEBMARKS_PY", "WEBMARKS_BETA", "WEBMARKS_DELTA", "EXPRESSCHAT", "SYNCMARK"],
 			  "CLASSIC" => ["STOCKAPP", "WEBMARKS", "CHATBOX", "POLLCENTER"],
 			  "NEW" => ["WEBMARKS_PY", "WEBMARKS_BETA", "WEBMARKS_DELTA", "EXPRESSCHAT", "SYNCMARK"],
 			  "APP" => [$app],
