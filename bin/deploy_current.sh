@@ -142,6 +142,7 @@ function install_webserver_configs()
 ######################
 ######## $PWD
 ######## ls $apache_config_dir
+########  $pub_ip
 #####################
 mesg
 
