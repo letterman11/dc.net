@@ -3,14 +3,20 @@
 
 #--------------------------------------------------------------------
 # script: deploy_current
-# author: angus brooks
+# author: ubuntu brooks
 # purpose: deploy classic and new apps to dcoda.net website
 #--------------------------------------------------------------------
 
-export HOME=/home/angus
-export git_master=$HOME/lmate_master
+export HOME=/home/ubuntu
+#export HOME=/home/ubuntu
+#export git_master=$HOME/lmate_master
+export git_master=$HOME/fed_master
 export classic_apps_git_url=https://github.com/letterman11/perlApps
 export main_lib_git_url=https://github.com/letterman11/dc.net
+
+export dcoda_net_apache_cfg=dcoda_net_site.dev.conf
+export apache_config_dir=/etc/apache2/sites-available
+
 
 export main_home=$HOME/dcoda_net
 export demo_home=$HOME/demo_dcoda_net
@@ -32,6 +38,18 @@ declare -a SRCs=(".js" ".pl" ".pm" ".htm" ".html" ".cgi" ".css")
 
 export LINK="ln -s"
 export INSTALL_Y="apt install -y"
+#export INSTALL_Y="dnf install -y"
+
+
+function update_os_package()
+{
+        sudo apt update
+}
+
+function grant_world_read()
+{
+	sudo chmod 0755 $HOME
+}
 
 
 #--install git
@@ -74,7 +92,8 @@ function setup_session_db()
 	ln -s $main_home/lib/sessionFile.dat $main_home/cgi-bin/stockApp/cgi-bin/sessionFile.dat
 	ln -s $main_home/db/dcoda_acme.webMarks $main_home/db/sessionDB
 
-	sed -i 's#ubuntu#angus#g' $main_home/lib/sessionFile.dat
+	#sed -i 's#ubuntu#ubuntu#g' $main_home/lib/sessionFile.dat
+	#sed -i 's#ubuntu#ubuntu#g' $main_home/lib/sessionFile.dat
 	sed -i 's#plack_home#dcoda_net#g' $main_home/lib/sessionFile.dat
 
 }
@@ -102,7 +121,26 @@ function apache2_setup()
 	sudo a2enmod lbmethod_byrequests
 	sudo a2enmod cgi
 	sudo a2enmod ssl
+	install_webserver_configs
 
+}
+
+function install_webserver_configs()
+{
+	sudo cp $git_master/dc.net/conf/$dcoda_net_apache_cfg $apache_config_dir
+	cd $apache_config_dir
+	cat <<mesg
+######################
+######## $PWD
+######## ls $apache_config_dir
+#####################
+mesg
+
+#	mv $dcoda_net_apache_cfg $dcoda_net_apache_cfg.conf
+
+	sudo a2ensite $dcoda_net_apache_cfg
+
+	sudo systemctl reload apache2
 }
 
 function create_main_sub_dirs()
@@ -146,10 +184,12 @@ function install_cgi_mods()
 }
 
 
+
+
 function deploy_stock_sqlite()
 {
 	cp $git_master/perlApps/stockApp/data/dcoda_acme.gz $main_home/db/dcoda_acme.gz
-	gunzip $main_home/db/dcoda_acme.gz
+	gunzip -y $main_home/db/dcoda_acme.gz
 
 }
 
@@ -353,9 +393,9 @@ function one_offs()
 
 	ln -s $main_home/public/images $main_home/public/static/images
 
-	chown -R angus:angus $main_home
-	chown -R angus:angus $demo_home
-	chown -R angus:angus $games_home
+	chown -R ubuntu:ubuntu $main_home
+	chown -R ubuntu:ubuntu $demo_home
+	chown -R ubuntu:ubuntu $games_home
 
 }
 
@@ -391,7 +431,7 @@ function one_offs_two()
 
 	chmod -R 777 $main_home/db
 
-	chown -R angus:angus $HOME/*
+	chown -R ubuntu:ubuntu $HOME/*
 }
 
 function copy_db_file()
@@ -458,24 +498,26 @@ function install_infrastructure()
 
 function main()
 {
-	install_git							#--1
+	grant_world_read
+	update_os_package
+	install_git					#--1
 	install_mysql_client				#--2
 	create_git_master_dir				#--3
 
-	clone_git_repos						#--4
+	clone_git_repos					#--4
 	install_new_site_apps				#--4a
 	
 	create_main_app_dirs				#--5
 	create_main_sub_dirs				#--6
-	install_classic_apps_to_main		#--7
+	install_classic_apps_to_main			#--7
 #	populate_apps_schema				#--8
-	install_cgi_mods					#--9
-	install_apache2						#--10
-	apache2_setup						#--11
+	install_cgi_mods				#--9
+	install_apache2					#--10
+	apache2_setup					#--11
 
 	one_offs
 	one_offs_two
-	replace_user ubuntu angus
+	replace_user ubuntu ubuntu
 
 }
 
