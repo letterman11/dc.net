@@ -134,7 +134,7 @@ function install_webserver_configs()
 
 	#must enable ec2 metadata v1 for simple command below otherwise
 	#complex v2 cmd required
-	pub_ip= $(curl http://169.254.169.254/public-ipv4)
+	pub_ip=$(curl http://169.254.169.254/public-ipv4)
 	regsub $dcoda_net_apache_cfg locahost $pub_ip 
 
 	cat <<mesg
