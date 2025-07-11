@@ -48,7 +48,7 @@ function update_os_package()
 
 function grant_world_read()
 {
-	sudo chmod 0755 $HOME
+	sudo chmod 0754 $HOME
 }
 
 
