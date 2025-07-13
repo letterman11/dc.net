@@ -46,9 +46,9 @@ function update_os_package()
         sudo apt update
 }
 
-function grant_world_read()
+function grant_world_exec()
 {
-	sudo chmod 0754 $HOME
+	sudo chmod 0755 $HOME
 }
 
 
@@ -508,7 +508,7 @@ function install_infrastructure()
 
 function main()
 {
-	grant_world_read
+	grant_world_exec
 	update_os_package
 	install_git					#--1
 	install_mysql_client				#--2
