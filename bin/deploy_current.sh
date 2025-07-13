@@ -44,6 +44,7 @@ export INSTALL_Y="apt install -y"
 function update_os_package()
 {
         sudo apt update
+	sudo $INSTALL_Y ec2-instance-connect
 }
 
 function grant_world_exec()
