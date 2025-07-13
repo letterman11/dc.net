@@ -185,6 +185,7 @@ function create_demo_sub_dirs()
 function install_cgi_mods()
 {
 	sudo $INSTALL_Y cpanminus
+ 	sudo $INSTALL_Y build-essential
 	sudo cpanm CGI
 	sudo cpanm CGI::Cookie
 	sudo cpanm DBI
