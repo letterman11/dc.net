@@ -189,7 +189,8 @@ function install_cgi_mods()
 	sudo cpanm CGI
 	sudo cpanm CGI::Cookie
 	sudo cpanm DBI
-	sudo cpanm DBD::SQLite
+ 	sudo $INSTALL_Y libdbd-sqlite3-perl
+	#sudo cpanm DBD::SQLite
 	sudo cpanm DBD::mysql
 	sudo cpanm DateTime
 }
