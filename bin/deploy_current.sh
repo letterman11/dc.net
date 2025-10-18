@@ -194,6 +194,7 @@ function install_cgi_mods()
     #sudo cpanm DBD::SQLite
     sudo cpanm DBD::mysql
     sudo cpanm DateTime
+    sudo cpanm IO::Socket::Timeout
     sudo cpanm Tie::IxHash 
 }
 
