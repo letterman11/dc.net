@@ -12,6 +12,11 @@ git fetch
 
 git pull
 
+
+git show --name-only crude_pagination  # show only files for given tag
+
+git show --name-only 234j324kj2332k42  # show only files for given commit hash
+
 git worktree add <path> <remote>/<branch>  #add a worktree with existing branch
 
 git worktree add --track -b <branch> <path> <remote>/<branch> #add worktree and create a new branch tracking remote branch
