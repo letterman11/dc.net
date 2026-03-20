@@ -1,0 +1,155 @@
+<html>
+<head>
+<style>
+    #main {
+        width:auto;
+    //    border:solid;
+    }
+    #container {
+        //width:80%;
+        width:auto;
+        display:inline;
+    }
+    #left {
+        width:15%;
+        display:inline;
+    }
+</style>
+
+<script language="javascript">
+var exec = 1;
+var FONTSIZE = "24px";
+var BLOCKSIZE = 14;
+
+var colors = [ "lime", "yellow", "gold", "lavender" ];
+
+
+function reset_blocks()
+{
+    delete_blocks()
+    FONTSIZE = "24px";
+}
+
+function delete_blocks() {
+    var con = document.getElementById("container");
+    con.replaceChildren();    
+}
+
+function calc_pascal() 
+{
+    if (exec % 2 > 0)
+        (colorOne = colors[2]) && ( colorTwo = colors[3]);
+    else
+        (colorOne = colors[0]) && ( colorTwo = colors[1]);
+
+    exec++;
+        
+    var x = 1;
+    var a = Array ([x],[x,x]);
+
+    var numComp =   document.getElementById("pascalID").value;
+    var N = numComp || 12;
+
+    for (let i = 2; i < N; i++)
+    {
+        T = Array();
+        T.push( a[0][0] )
+
+        for(let j=1; j < i; j++)
+        {
+            T.push(a[i-1][j-1] + a[i-1][j]);
+        }
+
+        T.push(a[0][0])
+        a.push(T);
+    }
+
+    delete_blocks();
+    print_pascal(a);
+}
+
+function filler(N,con,spaces)
+{
+    var msp = spaces.repeat(N);
+
+    var fillSpan = document.createElement("span"); 
+    fillSpan.style.whiteSpace = "pre-wrap";
+    fillSpan.style.fontSize = FONTSIZE;
+    var fillText = document.createTextNode(msp); 
+    fillSpan.appendChild(fillText); 
+    con.appendChild(fillSpan);
+
+}
+
+function print_pascal(a)
+{
+    var con = document.getElementById("container");
+    var spaces = " ".repeat(BLOCKSIZE);
+    var N = a.length;
+
+    for (var i=0; i < a.length; i++)
+    {
+        filler(N,con,spaces)
+        var line = a[i]
+
+        for(var numPos = 0; numPos < line.length; numPos++)
+        {
+            var spanner = document.createElement("span");
+            spanner.style.fontSize = FONTSIZE;
+            spanner.style.whiteSpace = "pre-wrap";
+
+            if(N % 2 > 0)
+                spanner.style.backgroundColor = colorOne;
+             else
+                spanner.style.backgroundColor = colorTwo;
+            
+                var restSpaces = BLOCKSIZE - String(line[numPos]).length 
+                var addSpaces  = " ".repeat(restSpaces)
+
+                var txtNode = document.createTextNode( addSpaces +  line[numPos] + addSpaces );
+
+            spanner.appendChild(txtNode);
+            con.appendChild(spanner);
+        }
+
+        var br = document.createElement("br"); 
+        con.appendChild(br);
+        N--
+    }
+
+    con.appendChild(br);
+    console.log("Div w " + con.clientWidth)
+
+    while ( con.clientWidth > 1600 )
+    {
+        FONTSIZE = parseInt(FONTSIZE);        
+        FONTSIZE -= 1; 
+        delete_blocks();
+        calc_pascal();
+    }
+}
+
+</script>
+</head>
+
+<body>
+<div id="main">
+  <div id="header">
+   <h1> PASCAL's PAGE </h1> 
+  </div>
+  <div id="left" style="display:inline-block; backgroundColor: orange"> </div>
+  <div style="display:inline-block" id="container" onClick="reset_blocks();">
+  </div>
+  <br>
+  <br>
+  <br>
+    <div>
+        <form id="formPascal">
+         <input style="font-Size:20px" id ="pascalID" name=numComp type="text" size="4" > 
+         <input style="font-Size:20px" type="button" name="goCalc" value="goCalc" onClick="calc_pascal();">
+         <input style="font-Size:20px" type="button" name="reset" value="reset" onClick="reset_blocks();">
+        </form>
+    </div>
+</div>
+</body>
+</html>
