@@ -3,25 +3,28 @@
 <style>
     #main {
         width:auto;
-    //    border:solid;
+        border:solid;
     }
     #container {
-        //width:80%;
         width:auto;
-        display:inline;
+        display:inline-block;
+        border:solid;
+        overflow:none;
     }
     #left {
         width:15%;
-        display:inline;
+        display:inline-block;
     }
 </style>
 
 <script language="javascript">
+var interest = .10;
+var Principal = 1000;
 var exec = 1;
 var FONTSIZE = "24px";
 var BLOCKSIZE = 14;
 
-var colors = [ "lime", "yellow", "gold", "lavender" ];
+var colors = [ "lime", "yellow", "red", "yellow" ];
 
 
 function reset_blocks()
@@ -78,14 +81,17 @@ function filler(N,con,spaces)
     var fillText = document.createTextNode(msp); 
     fillSpan.appendChild(fillText); 
     con.appendChild(fillSpan);
-
+    return fillSpan
 }
 
 function print_pascal(a)
 {
     var con = document.getElementById("container");
+    var main = document.getElementById("main");
     var spaces = " ".repeat(BLOCKSIZE);
     var N = a.length;
+    var spannerWidth;
+    var fillSpanWidth;
 
     for (var i=0; i < a.length; i++)
     {
@@ -109,6 +115,7 @@ function print_pascal(a)
                 var txtNode = document.createTextNode( addSpaces +  line[numPos] + addSpaces );
 
             spanner.appendChild(txtNode);
+            spannerWidth = spanner.clientWidth;
             con.appendChild(spanner);
         }
 
@@ -118,15 +125,15 @@ function print_pascal(a)
     }
 
     con.appendChild(br);
-    console.log("Div w " + con.clientWidth)
 
-    while ( con.clientWidth > 1600 )
+    while (( 0 + (con.lastChild.previousSibling.getBoundingClientRect().width * a.length))   >  con.getBoundingClientRect().width )
     {
         FONTSIZE = parseInt(FONTSIZE);        
         FONTSIZE -= 1; 
         delete_blocks();
         calc_pascal();
     }
+
 }
 
 </script>
