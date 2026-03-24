@@ -1,13 +1,18 @@
 <html>
 <head>
 <style>
+	#header {
+		border:outset;
+		padding:1px;
+	}
+
     #main {
         width:auto;
  //     border:solid;
     }
 	#container {
 
-//        border:solid;
+        border:outset
 
 	}
     #py_container {
@@ -29,13 +34,21 @@
 //      border:solid;
 		white-space: pre-wrap;
 	}
+	#formPascal input[type="text"] {
+		background-color: aqua;
+	}
+	#formPascal input[type="number"] {
+		background-color: aqua;
+		width:4em;
+	}
+	
 </style>
 
 <script language="javascript">
 var Config = {
 		interest: 0.10,
 		principal: 1000,
-		years: 10,
+		years: 5,
 		FONTSIZE: "18px",
 };
 
@@ -87,7 +100,6 @@ function calc_pascal()
 	else
 		interest = interest/100;
 
-	//parseInt(document.getElementById("pasYears").value);
 	Principal =  parseInt(document.getElementById("pasPrinc").value) || Principal;
 	
 	sumCFALL.push(calc_cfc(a[0],interest))
@@ -101,7 +113,7 @@ function calc_pascal()
 	if (numComp > 45)
 		(numComp = 45) && (document.getElementById("pasYears").value = 45);
 
-    var N = numComp || 11;
+    var N = numComp || Config.years+1;
 
 	document.getElementById("pasYears").value = N-1;
 	document.getElementById("pasInterest").value = interest;
@@ -202,7 +214,7 @@ function print_pascal(a,sumCFC)
         N--
 
 		var lspan = document.createElement("span");
-		var lspanTxt = document.createTextNode(sumCFC[i].toFixed(5) +  ' \t' + (Principal * sumCFC[i]).toFixed(4));
+		var lspanTxt = document.createTextNode(sumCFC[i].toFixed(5) +  ' \t$' + (Principal * sumCFC[i]).toFixed(3));
 
 		lspan.appendChild(lspanTxt);
 		lspan.style.display = "block";
@@ -234,7 +246,7 @@ function print_pascal(a,sumCFC)
 <body>
 <div id="main">
   <div id="header">
-   <h1 style="display:inline-block"> PASCAL's PAGE </h1> 
+   <h1 style="display:inline-block; color:darkgreen"> PASCAL's TRIANGLE PAGE </h1> 
 	<h1 style="display:inline-block; float:right">   
 		<a href="/"> <img src="/images/DCBANNER_CROP2_219_31_2.jpg"/> </a> </h1>
   </div>
@@ -253,7 +265,7 @@ function print_pascal(a,sumCFC)
   <br>
     <div>
         <form id="formPascal">
-	 	<input style="font-Size:20px;" id ="pasYears" name=numComp type="text" size="4" ><span> Years </><br> 
+	 	<input style="font-Size:20px;" id ="pasYears" name=numComp type="number" size="4" ><span> Years </><br> 
         <input style="font-Size:20px;" id ="pasPrinc" name=princpalComp type="text" size="4" ><span> Principal </> </br>
         <input style="font-Size:20px;" id ="pasInterest" name=interestComp type="text" size="4" ><span> Interest </><br> 
 
