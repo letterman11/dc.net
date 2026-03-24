@@ -1,0 +1,266 @@
+<html>
+<head>
+<style>
+    #main {
+        width:auto;
+ //     border:solid;
+    }
+	#container {
+
+//        border:solid;
+
+	}
+    #py_container {
+        width:auto;
+        display:inline-block;
+ //       border:solid;
+        overflow:none;
+    }
+    #left {
+        width:15%;
+  //      border:solid;
+        display:inline-block;
+    }
+	#left span {
+		white-space: pre-wrap;
+	}
+	#footer {
+		font-size: 20px;
+//      border:solid;
+		white-space: pre-wrap;
+	}
+</style>
+
+<script language="javascript">
+var Config = {
+		interest: 0.10,
+		principal: 1000,
+		years: 10,
+		FONTSIZE: "18px",
+};
+
+var interest = 0.10;
+var Principal = 1000;
+var FONTSIZE = Config.FONTSIZE;
+var BLOCKSIZE = 14;
+
+
+var colors = [ "lime", "yellow", "salmon", "yellow" ];
+
+
+function reset_blocks()
+{
+    delete_blocks()
+    document.getElementById("pasYears").value = "";
+    document.getElementById("pasPrinc").value = "";
+    document.getElementById("pasInterest").value = "";
+    FONTSIZE = Config.FONTSIZE;
+    interest= Config.interest;
+    Principal= Config.principal;
+}
+
+function delete_blocks() 
+{
+    var con = document.getElementById("py_container");
+    var left = document.getElementById("left");
+    var footer = document.getElementById("footer");
+
+    left.replaceChildren();    
+    con.replaceChildren();    
+    footer.replaceChildren();    
+}
+
+
+function calc_pascal() 
+{
+    var x = 1;
+    var a = Array ([x],[x,x]);
+
+    (colorOne = colors[0]) && ( colorTwo = colors[1]);
+        
+	var sumCFALL = []
+	
+	interest =  Number(document.getElementById("pasInterest").value) || interest;
+
+	if (parseInt(interest) == 0)
+		interest = interest;
+	else
+		interest = interest/100;
+
+	//parseInt(document.getElementById("pasYears").value);
+	Principal =  parseInt(document.getElementById("pasPrinc").value) || Principal;
+	
+	sumCFALL.push(calc_cfc(a[0],interest))
+	console.log( "A1 " + a[1]);
+	sumCFALL.push(calc_cfc(a[1],interest))
+
+
+
+    var numComp =   parseInt(document.getElementById("pasYears").value) + 1;
+
+	if (numComp > 45)
+		(numComp = 45) && (document.getElementById("pasYears").value = 45);
+
+    var N = numComp || 11;
+
+	document.getElementById("pasYears").value = N-1;
+	document.getElementById("pasInterest").value = interest;
+	document.getElementById("pasPrinc").value = Principal;
+
+    for (let i = 2; i < N; i++)
+    {
+        T = Array();
+		a.push(T);
+        T.push( a[0][0] )
+
+        for(let j=1; j < i; j++)
+        {
+            T.push(a[i-1][j-1] + a[i-1][j]);
+        }
+
+        T.push(a[0][0])
+
+		sumCF = calc_cfc(T,interest)
+		sumCFALL.push(sumCF)
+
+
+    }
+
+
+    delete_blocks();
+    print_pascal(a, sumCFALL);
+}
+
+function calc_cfc(t,inter)
+{
+	var cfc_all = [];
+	var xp		= 0
+
+	for (var i = 0; i < t.length; i++)
+	{
+		cfc_all.push(t[i] * inter ** xp)
+		xp = xp + 1
+	}
+
+	var sumCF = cfc_all.reduce((accumulator, currentValue) => accumulator + currentValue, 0 );
+	//console.log("SUMCF " + sumCF)
+	return sumCF
+}
+
+function filler(N,con,spaces)
+{
+    var msp = spaces.repeat(N);
+
+    var fillSpan = document.createElement("span"); 
+    fillSpan.style.whiteSpace = "pre-wrap";
+    fillSpan.style.fontSize = FONTSIZE;
+    var fillText = document.createTextNode(msp); 
+    fillSpan.appendChild(fillText); 
+    con.appendChild(fillSpan);
+    return fillSpan
+}
+
+function print_pascal(a,sumCFC)
+{
+    var con = document.getElementById("py_container");
+    var main = document.getElementById("main");
+    var left = document.getElementById("left");
+
+    var spaces = " ".repeat(BLOCKSIZE);
+    var N = a.length;
+    var spannerWidth;
+    var fillSpanWidth;
+
+    for (var i=0; i < a.length; i++)
+    {
+        filler(N,con,spaces)
+        var line = a[i]
+
+        for(var numPos = 0; numPos < line.length; numPos++)
+        {
+            var spanner = document.createElement("span");
+            spanner.style.fontSize = FONTSIZE;
+            spanner.style.whiteSpace = "pre-wrap";
+
+            if(N % 2 > 0)
+                spanner.style.backgroundColor = colorOne;
+             else
+                spanner.style.backgroundColor = colorTwo;
+            
+                var restSpaces = BLOCKSIZE - String(line[numPos]).length 
+                var addSpaces  = " ".repeat(restSpaces)
+
+                var txtNode = document.createTextNode( addSpaces +  line[numPos] + addSpaces );
+
+            spanner.appendChild(txtNode);
+            spannerWidth = spanner.clientWidth;
+            con.appendChild(spanner);
+        }
+
+        var br = document.createElement("br"); 
+        con.appendChild(br);
+        N--
+
+		var lspan = document.createElement("span");
+		var lspanTxt = document.createTextNode(sumCFC[i].toFixed(5) +  ' \t' + (Principal * sumCFC[i]).toFixed(4));
+
+		lspan.appendChild(lspanTxt);
+		lspan.style.display = "block";
+		lspan.style.fontSize = FONTSIZE;
+		left.appendChild (lspan);
+
+    }
+
+	
+	var FV = (Principal * sumCFC[a.length-1]).toFixed(4);
+    con.appendChild(br);
+
+    var footer_div = document.getElementById("footer");
+	footer_div.innerHTML = `<span> Principal: \$${Principal}\tInterest: ${ 100 * interest }%\t Years: ${a.length -1}\tFuture Value: \$${FV} </span>`;
+
+    while (( 0 + (con.lastChild.previousSibling.getBoundingClientRect().width * a.length))   >  con.getBoundingClientRect().width )
+    {
+        FONTSIZE = parseInt(FONTSIZE);        
+        FONTSIZE -= 1; 
+        delete_blocks();
+        calc_pascal();
+    }
+
+}
+
+</script>
+</head>
+
+<body>
+<div id="main">
+  <div id="header">
+   <h1 style="display:inline-block"> PASCAL's PAGE </h1> 
+	<h1 style="display:inline-block; float:right">   
+		<a href="/"> <img src="/images/DCBANNER_CROP2_219_31_2.jpg"/> </a> </h1>
+  </div>
+
+<div id="container">
+
+  <div id="left" style="display:inline-block; backgroundColor: orange">  </div>
+  <div style="display:inline-block" id="py_container" onClick="reset_blocks();">
+  </div>
+  <br>
+ <br>
+  <div id="footer"> </div>
+</div>
+  <br>
+  <br>
+  <br>
+    <div>
+        <form id="formPascal">
+	 	<input style="font-Size:20px;" id ="pasYears" name=numComp type="text" size="4" ><span> Years </><br> 
+        <input style="font-Size:20px;" id ="pasPrinc" name=princpalComp type="text" size="4" ><span> Principal </> </br>
+        <input style="font-Size:20px;" id ="pasInterest" name=interestComp type="text" size="4" ><span> Interest </><br> 
+
+         <input style="font-Size:20px" type="button" name="goCalc" value="goCalc" onClick="calc_pascal();">
+         <input style="font-Size:20px" type="button" name="reset" value="reset" onClick="reset_blocks();">
+        </form>
+    </div>
+</div>
+</body>
+</html>

@@ -3,12 +3,12 @@
 <style>
     #main {
         width:auto;
-        border:solid;
+        //border:solid;
     }
     #container {
         width:auto;
         display:inline-block;
-        border:solid;
+        //border:solid;
         overflow:none;
     }
     #left {
@@ -24,12 +24,13 @@ var exec = 1;
 var FONTSIZE = "24px";
 var BLOCKSIZE = 14;
 
-var colors = [ "lime", "yellow", "red", "yellow" ];
+var colors = [ "lime", "yellow", "salmon", "yellow" ];
 
 
 function reset_blocks()
 {
     delete_blocks()
+    document.getElementById("pascalID").value = "";
     FONTSIZE = "24px";
 }
 
@@ -51,7 +52,14 @@ function calc_pascal()
     var a = Array ([x],[x,x]);
 
     var numComp =   document.getElementById("pascalID").value;
+
+	if (numComp > 45)
+		(numComp = 45) && (document.getElementById("pascalID").value = 45);
+
+
     var N = numComp || 12;
+
+	document.getElementById("pascalID").value = N;
 
     for (let i = 2; i < N; i++)
     {
@@ -142,7 +150,9 @@ function print_pascal(a)
 <body>
 <div id="main">
   <div id="header">
-   <h1> PASCAL's PAGE </h1> 
+   <h1 style="display:inline-block"> PASCAL's PAGE </h1> 
+	<h1 style="display:inline-block; float:right">   
+		<a href="/"> <img src="/images/DCBANNER_CROP2_219_31_2.jpg"/> </a> </h1>
   </div>
   <div id="left" style="display:inline-block; backgroundColor: orange"> </div>
   <div style="display:inline-block" id="container" onClick="reset_blocks();">
