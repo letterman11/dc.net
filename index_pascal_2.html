@@ -8,7 +8,6 @@
 
     #main {
         width:auto;
- //     border:solid;
     }
 	#container {
 
@@ -18,12 +17,10 @@
     #py_container {
         width:auto;
         display:inline-block;
- //       border:solid;
         overflow:none;
     }
     #left {
         width:15%;
-  //      border:solid;
         display:inline-block;
     }
 	#left span {
@@ -31,7 +28,6 @@
 	}
 	#footer {
 		font-size: 20px;
-//      border:solid;
 		white-space: pre-wrap;
 	}
 	#formPascal input[type="text"] {
@@ -52,21 +48,21 @@ var Config = {
 		FONTSIZE: "18px",
 };
 
-var interest = 0.10;
-var Principal = 1000;
+var interest = Config.interest;
+var Principal = Config.principal;
 var FONTSIZE = Config.FONTSIZE;
 var BLOCKSIZE = 14;
 
-
 var colors = [ "lime", "yellow", "salmon", "yellow" ];
-
 
 function reset_blocks()
 {
     delete_blocks()
+
     document.getElementById("pasYears").value = "";
     document.getElementById("pasPrinc").value = "";
     document.getElementById("pasInterest").value = "";
+
     FONTSIZE = Config.FONTSIZE;
     interest= Config.interest;
     Principal= Config.principal;
@@ -106,8 +102,6 @@ function calc_pascal()
 	console.log( "A1 " + a[1]);
 	sumCFALL.push(calc_cfc(a[1],interest))
 
-
-
     var numComp =   parseInt(document.getElementById("pasYears").value) + 1;
 
 	if (numComp > 45)
@@ -135,9 +129,7 @@ function calc_pascal()
 		sumCF = calc_cfc(T,interest)
 		sumCFALL.push(sumCF)
 
-
     }
-
 
     delete_blocks();
     print_pascal(a, sumCFALL);
@@ -155,7 +147,6 @@ function calc_cfc(t,inter)
 	}
 
 	var sumCF = cfc_all.reduce((accumulator, currentValue) => accumulator + currentValue, 0 );
-	//console.log("SUMCF " + sumCF)
 	return sumCF
 }
 
@@ -223,12 +214,12 @@ function print_pascal(a,sumCFC)
 
     }
 
-	
 	var FV = (Principal * sumCFC[a.length-1]).toFixed(4);
     con.appendChild(br);
 
     var footer_div = document.getElementById("footer");
-	footer_div.innerHTML = `<span> Principal: \$${Principal}\tInterest: ${ 100 * interest }%\t Years: ${a.length -1}\tFuture Value: \$${FV} </span>`;
+
+	footer_div.innerHTML = `<span> Principal: \$${Principal}\tInterest: ${ 100 * interest }% \t Years: ${a.length -1} \t Future Value: \$${FV} </span>`;
 
     while (( 0 + (con.lastChild.previousSibling.getBoundingClientRect().width * a.length))   >  con.getBoundingClientRect().width )
     {
