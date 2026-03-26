@@ -100,7 +100,7 @@ sub read_config
 
       $db_serv_cfg{uc($curr_sec)} = {};                       
                                                                #-- vital
-      tie ( %{ $db_serv_cfg{uc($curr_sec)} }, "Tie::IxHash");  #-- ordered Tie hash statement to keep 
+      #tie ( %{ $db_serv_cfg{uc($curr_sec)} }, "Tie::IxHash");  #-- ordered Tie hash statement to keep 
                                                                #-- section and values in order
      }
      elsif (/=/)
@@ -171,7 +171,7 @@ sub comm_out
     my $k = $_[0];
     my $test_sec = $_[1];
 
-    return  ($k =~ /$test_sec/i) ? "" : "#"; 
+    return  ($k =~ /$test_sec\b/i) ? "" : "#"; 
 }
 
 

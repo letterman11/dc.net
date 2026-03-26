@@ -20,7 +20,7 @@ A2="Classic"
 A3="NEW"   
 A4="SOME"   
 
-declare -A db_map=([1]="AZURE_MYSQL" [2]="AWS_MYSQL" [3]="AWS_MYSQL_nano" [4]="SQLITE" [5]="ALIBABA_MYSQL" [6]="AIVEN_MYSQL")
+declare -A db_map=([1]="AZURE_MYSQL" [2]="AWS_MYSQL" [3]="AWS_MYSQL_nano" [4]="SQLITE3" [5]="ALIBABA_MYSQL" [6]="AIVEN_MYSQL")
 declare -A env_map=(["A"]=$A1 ["C"]=$A2 ["N"]=$A3 ["S"]=$A4)
 
 #declare -a apps=("STOCKAPP" "WEBMARKS" "CHATBOX" "POLLCENTER" "WEBMARKS_PY" "WEBMARKS_BETA" "WEBMARKS_DELTA" "EXPRESSCHAT")
